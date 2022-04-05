@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.nisilab.simpletodo.databinding.FragmentTodoEditBinding
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 
@@ -36,9 +38,11 @@ class TodoListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
-            R.layout.fragment_todo_edit,container,false)
-
+        val binding = DataBindingUtil.inflate<FragmentTodoListBinding>(inflater,
+            R.layout.fragment_todo_list,container,false)
+        binding.toEditButton.setOnClickListener {
+            findNavController().navigate(R.id.action_todoListFragment_to_todoEditFragment)
+        }
 
         return binding.root
     }
