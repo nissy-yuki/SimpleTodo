@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class DataRepositoryImpl @Inject constructor(): DataRepository {
     @Inject lateinit var dao: TodoDao
-    
+
     override suspend fun getItems(): List<TodoItem> {
         return dao.loadAllItems()
     }
