@@ -7,4 +7,5 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     repository: DataRepository
 ): ViewModel() {
+
 }

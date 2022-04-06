@@ -5,16 +5,16 @@ import androidx.room.*
 @Dao
 interface TodoDao {
     @Query("SELECT * FROM todo_table")
-    fun loadAllItems(): List<TodoItem>
+    suspend fun loadAllItems(): List<TodoItem>
 
     @Insert
-    fun addItem(item: TodoItem)
+    suspend fun addItem(item: TodoItem)
 
     @Update
-    fun updateItem(item: TodoItem)
+    suspend fun updateItem(item: TodoItem)
 
     @Delete
-    fun deleteItem(item: TodoItem)
+    suspend fun deleteItem(item: TodoItem)
 
 
 }
