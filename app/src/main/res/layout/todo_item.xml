@@ -12,11 +12,20 @@
             name="deadLine"
             type="String" />
         <variable
+            name="tag"
+            type="String" />
+        <variable
             name="text"
             type="String" />
         <variable
             name="isOpen"
             type="Boolean" />
+        <variable
+            name="onClickOpenButton"
+            type="View.OnClickListener" />
+        <variable
+            name="onClickCloseButton"
+            type="View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
