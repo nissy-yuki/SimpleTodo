@@ -5,7 +5,9 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
-
+kapt {
+    correctErrorTypes = true
+}
 
 android {
     compileSdk 32
@@ -37,6 +39,8 @@ android {
         enabled = true
     }
 }
+
+
 
 dependencies {
 
