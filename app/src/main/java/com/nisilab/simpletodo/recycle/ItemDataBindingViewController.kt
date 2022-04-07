@@ -15,13 +15,14 @@ class ItemDataBindingViewController(
                 deadLine(item.deadLine.toString())
                 tag(item.tag)
                 text(item.text)
-                onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton() } )
-                onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton() } )
+                onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
+                onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton(item) } )
             }
         }
     }
+
     interface SelectListener {
-        fun onClickOpenButton()
-        fun onClickCloseButton()
+        fun onClickOpenButton(item: RecycleItem)
+        fun onClickCloseButton(item: RecycleItem)
     }
 }

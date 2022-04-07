@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.ListViewModel
 import com.nisilab.simpletodo.recycle.ItemDataBindingViewController
+import com.nisilab.simpletodo.recycle.RecycleItem
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,12 +55,12 @@ class TodoListFragment : Fragment() {
 
         val itemsViewController = ItemDataBindingViewController(object :
             ItemDataBindingViewController.SelectListener {
-            override fun onClickOpenButton() {
-                TODO("Not yet implemented")
+            override fun onClickOpenButton(item: RecycleItem) {
+                viewModel.setOpenFlag(item)
             }
 
-            override fun onClickCloseButton() {
-                TODO("Not yet implemented")
+            override fun onClickCloseButton(item: RecycleItem) {
+                viewModel.setCloseFlag(item)
             }
         })
 
@@ -68,6 +69,10 @@ class TodoListFragment : Fragment() {
             this.layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
+        }
+
+        viewModel.recycleItems.observe(viewLifecycleOwner){
+            itemsViewController.setData(it,false)
         }
 
         return binding.root
