@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.nisilab.simpletodo.databinding.FragmentTodoEditBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.ListViewModel
+import com.nisilab.simpletodo.recycle.ItemDataBindingViewController
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +50,24 @@ class TodoListFragment : Fragment() {
 
         binding.toEditButton.setOnClickListener {
             findNavController().navigate(R.id.action_todoListFragment_to_todoEditFragment)
+        }
+
+        val itemsViewController = ItemDataBindingViewController(object :
+            ItemDataBindingViewController.SelectListener {
+            override fun onClickOpenButton() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onClickCloseButton() {
+                TODO("Not yet implemented")
+            }
+        })
+
+        binding.todoList.apply {
+            this.adapter = itemsViewController.adapter
+            this.layoutManager = LinearLayoutManager(context).apply {
+                orientation = LinearLayoutManager.VERTICAL
+            }
         }
 
         return binding.root
