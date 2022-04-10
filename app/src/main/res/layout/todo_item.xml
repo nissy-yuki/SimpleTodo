@@ -82,7 +82,9 @@
                     android:visibility="@{isOpen ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/titleText"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+                    app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
+                    android:clickable="true"
+                    android:onClick="@{onClickOpenButton}"/>
 
                 <ImageView
                     android:id="@+id/closeButton"
@@ -93,7 +95,9 @@
                     android:visibility="@{isOpen ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
-                    app:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
+                    app:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
+                    android:clickable="true"
+                    android:onClick="@{onClickCloseButton}"/>
 
                 <TextView
                     android:id="@+id/textView"
