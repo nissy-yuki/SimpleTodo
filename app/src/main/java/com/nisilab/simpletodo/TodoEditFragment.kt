@@ -48,14 +48,18 @@ class TodoEditFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
             R.layout.fragment_todo_edit,container,false)
 
-        binding.toListButtton.setOnClickListener {
-            if(!binding.titleEditer.text.isNullOrBlank() && !binding.DateEditer.text.isNullOrBlank() && !binding.TimeEditer.text.isNullOrBlank()){
+        // 保存ボタンのクリックリスナーの設定
+        binding.saveButton.setOnClickListener {
+            if(!binding.titleEditor.text.isNullOrBlank() && !binding.dateEditor.text.isNullOrBlank() && !binding.timeEditor.text.isNullOrBlank()){
                 findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
             } else {
                 val message: String = "タイトル、または日時を入力してください"
                 Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
             }
+        }
 
+        binding.toListButtton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         return binding.root

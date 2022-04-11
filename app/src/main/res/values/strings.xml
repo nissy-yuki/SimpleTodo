@@ -7,4 +7,6 @@
     <string name="deadLine_text">deadLine</string>
     <string name="tag_text">tag</string>
     <string name="text_Text">text</string>
+    <string name="save_button_text">save</string>
+    <string name="cancel_button_text">back</string>
 </resources>

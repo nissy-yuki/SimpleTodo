@@ -15,10 +15,10 @@
             android:id="@+id/toListButtton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Button"
+            android:text="@string/cancel_button_text"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -37,22 +37,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
             android:text="@string/deadLine_text"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/timeEditor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+            app:layout_constraintTop_toTopOf="@+id/dateEditor" />
 
         <TextView
             android:id="@+id/tagText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="32dp"
             android:text="@string/tag_text"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deadLineText" />
+            app:layout_constraintTop_toBottomOf="@+id/timeEditor" />
 
         <TextView
             android:id="@+id/textText"
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tagText" />
 
         <EditText
-            android:id="@+id/titleEditer"
+            android:id="@+id/titleEditor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
             app:layout_constraintStart_toEndOf="@+id/deadLineText" />
 
         <EditText
-            android:id="@+id/tagEditer"
+            android:id="@+id/tagEditor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -90,7 +90,7 @@
             app:layout_constraintStart_toEndOf="@+id/deadLineText" />
 
         <EditText
-            android:id="@+id/textEditer"
+            android:id="@+id/textEditor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -102,23 +102,37 @@
             app:layout_constraintStart_toEndOf="@+id/deadLineText" />
 
         <EditText
-            android:id="@+id/DateEditer"
+            android:id="@+id/dateEditor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="date"
+            app:layout_constraintStart_toEndOf="@+id/deadLineText"
+            app:layout_constraintTop_toBottomOf="@+id/titleEditor" />
+
+        <EditText
+            android:id="@+id/timeEditor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:ems="10"
-            android:inputType="date"
-            app:layout_constraintBaseline_toBaselineOf="@+id/deadLineText"
-            app:layout_constraintStart_toEndOf="@+id/deadLineText" />
+            android:focusable="false"
+            android:inputType="time"
+            app:layout_constraintStart_toEndOf="@+id/deadLineText"
+            app:layout_constraintTop_toBottomOf="@+id/dateEditor" />
 
-        <EditText
-            android:id="@+id/TimeEditer"
+        <Button
+            android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="time"
-            app:layout_constraintBaseline_toBaselineOf="@+id/deadLineText"
-            app:layout_constraintStart_toEndOf="@+id/DateEditer" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/save_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
