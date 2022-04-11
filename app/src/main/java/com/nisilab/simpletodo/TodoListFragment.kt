@@ -73,7 +73,7 @@ class TodoListFragment : Fragment() {
             }
         }
 
-        viewModel.recycleItems.observe(viewLifecycleOwner){
+        viewModel.outRecycleItems.observe(viewLifecycleOwner){
             itemsViewController.setData(it,false)
         }
 

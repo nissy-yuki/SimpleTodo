@@ -17,9 +17,13 @@ class ListViewModel @ViewModelInject constructor(
 ): ViewModel() {
     private val _todoItems: MutableLiveData<List<TodoItem>> = MutableLiveData()
     private val _recycleItems: MutableLiveData<List<RecycleItem>> = MutableLiveData()
+    private val _outRecycleItems: MutableLiveData<List<RecycleItem>> = MutableLiveData()
+
 
     val todoItems: LiveData<List<TodoItem>> = _todoItems
     val recycleItems: LiveData<List<RecycleItem>> = _recycleItems
+    val outRecycleItems: LiveData<List<RecycleItem>> = _outRecycleItems
+
 
     fun setAllItems(){
         viewModelScope.launch {
@@ -28,6 +32,11 @@ class ListViewModel @ViewModelInject constructor(
             setRecycleItems()
         }
     }
+
+    fun setOutItems(){
+        _outRecycleItems.value = _recycleItems.value
+    }
+
 
     fun updateItem(item: TodoItem){
         viewModelScope.launch {
@@ -47,17 +56,18 @@ class ListViewModel @ViewModelInject constructor(
             list.add(it.toRecycleItem())
         }
         _recycleItems.value = list
+        setOutItems()
     }
 
     fun setOpenFlag(item: RecycleItem){
-        val list = _recycleItems.value
-        list!!.find { it.id == item.id }!!.isOpen = true
+        val list = _recycleItems.value!!
+        list.find { it.id == item.id }!!.isOpen = true
         _recycleItems.value = list
     }
 
     fun setCloseFlag(item: RecycleItem){
-        val list = _recycleItems.value
-        list!!.find { it.id == item.id }!!.isOpen = false
+        val list = _recycleItems.value!!
+        list.find { it.id == item.id }!!.isOpen = false
         _recycleItems.value = list
     }
 }
