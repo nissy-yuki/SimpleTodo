@@ -13,8 +13,9 @@ class ItemDataBindingViewController(
         if(!items.isNullOrEmpty()){
             items.forEach { item ->
                 todoItem {
+                    id("todo_item"+item.id)
                     title(item.title)
-                    deadLine(item.deadLine.toString())
+                    deadLine(item.deadLine)
                     tag(item.tag)
                     text(item.text)
                     onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
@@ -23,6 +24,7 @@ class ItemDataBindingViewController(
             }
         }else{
             noDataItem {
+                id("no_data_item")
                 text("no data")
             }
         }

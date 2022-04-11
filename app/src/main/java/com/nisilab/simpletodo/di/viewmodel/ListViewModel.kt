@@ -1,5 +1,6 @@
 package com.nisilab.simpletodo.di.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,8 @@ import com.nisilab.simpletodo.recycle.RecycleItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ListViewModel @Inject constructor(
+
+class ListViewModel @ViewModelInject constructor(
     private val repository: DataRepository
 ): ViewModel() {
     private val _todoItems: MutableLiveData<List<TodoItem>> = MutableLiveData()

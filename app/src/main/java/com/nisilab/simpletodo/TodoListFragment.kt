@@ -49,6 +49,8 @@ class TodoListFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentTodoListBinding>(inflater,
             R.layout.fragment_todo_list,container,false)
 
+        viewModel.setAllItems()
+
         binding.toEditButton.setOnClickListener {
             findNavController().navigate(R.id.action_todoListFragment_to_todoEditFragment)
         }
