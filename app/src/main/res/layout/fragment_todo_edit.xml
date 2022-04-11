@@ -4,7 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <data>
-
+        <variable
+            name="timeText"
+            type="String" />
+        <variable
+            name="dateText"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
+            android:text="@{dateText}"
             android:ems="10"
             android:focusable="false"
             android:inputType="date"
@@ -118,6 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:text="@{timeText}"
             android:ems="10"
             android:focusable="false"
             android:inputType="time"

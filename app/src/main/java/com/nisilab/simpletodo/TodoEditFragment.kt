@@ -69,7 +69,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         }
 
         binding.timeEditor.setOnClickListener {
-            val newFragment = DatePick()
+            val newFragment = TimePick()
             newFragment.show(childFragmentManager, "timePicker")
         }
 
@@ -87,21 +87,23 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
         viewModel.editDate.observe(viewLifecycleOwner){
             viewModel.setDeadLine()
+            binding.dateText = it.toString()
         }
 
         viewModel.editTime.observe(viewLifecycleOwner){
             viewModel.setDeadLine()
+            binding.timeText = it.toString()
         }
 
         return binding.root
     }
 
     override fun selectedDate(year: Int, month: Int, day: Int) {
-        viewModel.setEditDate("$year-$month-$day")
+        viewModel.setEditDate("%4d-%02d-%02d".format(year, month, day))
     }
 
     override fun selectedTime(hour: Int, minute: Int) {
-        viewModel.setEditTime("$hour:$minute")
+        viewModel.setEditTime("%02d:%02d".format(hour, minute))
     }
 
     companion object {
