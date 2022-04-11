@@ -13,6 +13,7 @@ import com.nisilab.simpletodo.databinding.FragmentTodoEditBinding
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.EditViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.sql.Time
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,9 +59,21 @@ class TodoEditFragment : Fragment() {
             }
         }
 
-        binding.toListButtton.setOnClickListener {
+        binding.toListButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.dateEditor.setOnClickListener {
+            val newFragment = DatePick()
+            newFragment.show(childFragmentManager, "datePicker")
+        }
+
+        binding.timeEditor.setOnClickListener {
+            val newFragment = TimePick()
+            newFragment.show(childFragmentManager, "timePicker")
+        }
+
+
 
         return binding.root
     }
