@@ -13,7 +13,6 @@ import com.nisilab.simpletodo.databinding.FragmentTodoEditBinding
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.EditViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.sql.Time
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 @AndroidEntryPoint
-class TodoEditFragment : Fragment() {
+class TodoEditFragment : Fragment(), DatePick.OnSelectedTimeListener, TimePick.OnSelectedTimeListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -69,8 +68,8 @@ class TodoEditFragment : Fragment() {
         }
 
         binding.timeEditor.setOnClickListener {
-            val newFragment = TimePick()
-            newFragment.show(childFragmentManager, "timePicker")
+            val newFragment = DatePick()
+            newFragment.show(childFragmentManager, "datePicker")
         }
 
 
@@ -96,5 +95,13 @@ class TodoEditFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun selectedDate(year: Int, month: Int, day: Int) {
+
+    }
+
+    override fun selectedTime(hour: Int, minute: Int) {
+        TODO("Not yet implemented")
     }
 }
