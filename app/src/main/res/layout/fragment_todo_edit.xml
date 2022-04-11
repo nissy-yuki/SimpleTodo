@@ -20,6 +20,106 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/title_text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/deadLineText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@string/deadLine_text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+        <TextView
+            android:id="@+id/tagText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@string/tag_text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deadLineText" />
+
+        <TextView
+            android:id="@+id/textText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@string/text_Text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tagText" />
+
+        <EditText
+            android:id="@+id/titleEditer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:hint="@string/title_text"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/titleText"
+            app:layout_constraintStart_toEndOf="@+id/deadLineText" />
+
+        <EditText
+            android:id="@+id/tagEditer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:hint="@string/tag_text"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tagText"
+            app:layout_constraintStart_toEndOf="@+id/deadLineText" />
+
+        <EditText
+            android:id="@+id/textEditer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:hint="@string/text_Text"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textText"
+            app:layout_constraintStart_toEndOf="@+id/deadLineText" />
+
+        <EditText
+            android:id="@+id/DateEditer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:inputType="date"
+            app:layout_constraintBaseline_toBaselineOf="@+id/deadLineText"
+            app:layout_constraintStart_toEndOf="@+id/deadLineText" />
+
+        <EditText
+            android:id="@+id/TimeEditer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"
+            app:layout_constraintBaseline_toBaselineOf="@+id/deadLineText"
+            app:layout_constraintStart_toEndOf="@+id/DateEditer" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

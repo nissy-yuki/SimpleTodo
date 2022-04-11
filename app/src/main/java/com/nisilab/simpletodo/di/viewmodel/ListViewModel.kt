@@ -21,7 +21,9 @@ class ListViewModel @ViewModelInject constructor(
 
 
     val todoItems: LiveData<List<TodoItem>> = _todoItems
+    // 全リサイクルアイテム
     val recycleItems: LiveData<List<RecycleItem>> = _recycleItems
+    // 出力用リサイクルアイテム
     val outRecycleItems: LiveData<List<RecycleItem>> = _outRecycleItems
 
 
@@ -37,13 +39,15 @@ class ListViewModel @ViewModelInject constructor(
         _outRecycleItems.value = _recycleItems.value
     }
 
-
+    // 完了ボタンを押された時
     fun updateItem(item: TodoItem){
         viewModelScope.launch {
+            item.isFinish = !item.isFinish
             repository.updateItem(item)
         }
     }
 
+    // 削除ボタンを押された時
     fun deleteItem(item: TodoItem){
         viewModelScope.launch {
             repository.deleteItem(item)

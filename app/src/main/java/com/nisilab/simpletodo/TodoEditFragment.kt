@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.nisilab.simpletodo.databinding.FragmentTodoEditBinding
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.EditViewModel
@@ -48,7 +49,13 @@ class TodoEditFragment : Fragment() {
             R.layout.fragment_todo_edit,container,false)
 
         binding.toListButtton.setOnClickListener {
-            findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
+            if(!binding.titleEditer.text.isNullOrBlank() && !binding.DateEditer.text.isNullOrBlank() && !binding.TimeEditer.text.isNullOrBlank()){
+                findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
+            } else {
+                val message: String = "タイトル、または日時を入力してください"
+                Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+            }
+
         }
 
         return binding.root
