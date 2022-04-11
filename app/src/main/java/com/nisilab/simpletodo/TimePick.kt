@@ -18,8 +18,15 @@ class TimePick: DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnSelectedTimeListener) {
-            listener = context
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            listener = parentFragment as OnSelectedTimeListener
+        } catch (e: ClassCastException) {
+            // The activity doesn't implement the interface, throw exception
+            throw ClassCastException(
+                (context.toString() +
+                        " must implement NoticeDialogListener")
+            )
         }
     }
 
@@ -32,6 +39,6 @@ class TimePick: DialogFragment(),TimePickerDialog.OnTimeSetListener {
     }
 
     override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
-        listener.selectedTime(hour, minute)
+        this.listener.selectedTime(hour, minute)
     }
 }

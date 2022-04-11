@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,7 +27,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 @AndroidEntryPoint
-class TodoEditFragment : Fragment(), DatePick.OnSelectedTimeListener, TimePick.OnSelectedTimeListener {
+class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.OnSelectedTimeListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -53,7 +54,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedTimeListener, TimePick.O
             if(!binding.titleEditor.text.isNullOrBlank() && !binding.dateEditor.text.isNullOrBlank() && !binding.timeEditor.text.isNullOrBlank()){
                 findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
             } else {
-                val message: String = "タイトル、または日時を入力してください"
+                val message = "タイトル、または日時を入力してください"
                 Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -69,12 +70,38 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedTimeListener, TimePick.O
 
         binding.timeEditor.setOnClickListener {
             val newFragment = DatePick()
-            newFragment.show(childFragmentManager, "datePicker")
+            newFragment.show(childFragmentManager, "timePicker")
         }
 
+        binding.titleEditor.addTextChangedListener {
+            viewModel.setEditTitle(it.toString())
+        }
 
+        binding.tagEditor.addTextChangedListener {
+            viewModel.setEditTag(it.toString())
+        }
+
+        binding.textEditor.addTextChangedListener {
+            viewModel.setEditText(it.toString())
+        }
+
+        viewModel.editDate.observe(viewLifecycleOwner){
+            viewModel.setDeadLine()
+        }
+
+        viewModel.editTime.observe(viewLifecycleOwner){
+            viewModel.setDeadLine()
+        }
 
         return binding.root
+    }
+
+    override fun selectedDate(year: Int, month: Int, day: Int) {
+        viewModel.setEditDate("$year-$month-$day")
+    }
+
+    override fun selectedTime(hour: Int, minute: Int) {
+        viewModel.setEditTime("$hour:$minute")
     }
 
     companion object {
@@ -97,11 +124,5 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedTimeListener, TimePick.O
             }
     }
 
-    override fun selectedDate(year: Int, month: Int, day: Int) {
 
-    }
-
-    override fun selectedTime(hour: Int, minute: Int) {
-        TODO("Not yet implemented")
-    }
 }

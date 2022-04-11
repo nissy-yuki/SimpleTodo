@@ -4,22 +4,30 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
 class DatePick: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    interface OnSelectedTimeListener {
+    interface OnSelectedDateListener {
         fun selectedDate(year: Int, month: Int, day: Int)
     }
 
-    private lateinit var listener: OnSelectedTimeListener
+    private lateinit var listener: OnSelectedDateListener
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnSelectedTimeListener) {
-            listener = context
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            listener = parentFragment as OnSelectedDateListener
+        } catch (e: ClassCastException) {
+            // The activity doesn't implement the interface, throw exception
+            throw ClassCastException(
+                (context.toString() +
+                        " must implement NoticeDialogListener")
+            )
         }
     }
 
@@ -33,6 +41,6 @@ class DatePick: DialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        listener.selectedDate(year,month,day)
+        this.listener.selectedDate(year,month,day)
     }
 }
