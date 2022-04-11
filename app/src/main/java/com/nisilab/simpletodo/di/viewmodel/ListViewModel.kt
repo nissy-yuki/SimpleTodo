@@ -24,6 +24,7 @@ class ListViewModel @ViewModelInject constructor(
     fun setAllItems(){
         viewModelScope.launch {
             _todoItems.value = repository.getItems()
+            if(!_todoItems.value.isNullOrEmpty()) _todoItems.value!!.sortedWith( compareBy<TodoItem> {it.deadLine} )
             setRecycleItems()
         }
     }
