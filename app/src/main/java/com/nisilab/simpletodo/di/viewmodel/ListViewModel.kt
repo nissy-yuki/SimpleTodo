@@ -1,5 +1,6 @@
 package com.nisilab.simpletodo.di.viewmodel
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,16 +36,16 @@ class ListViewModel @ViewModelInject constructor(
         }
     }
 
-    fun setOutItems(){
-        _outRecycleItems.value = _recycleItems.value
-    }
-
     // 完了ボタンを押された時
     fun updateItem(item: TodoItem){
         viewModelScope.launch {
             item.isFinish = !item.isFinish
             repository.updateItem(item)
         }
+    }
+
+    fun updateRecycleItems(){
+
     }
 
     // 削除ボタンを押された時
@@ -60,7 +61,10 @@ class ListViewModel @ViewModelInject constructor(
             list.add(it.toRecycleItem())
         }
         _recycleItems.value = list
-        setOutItems()
+    }
+
+    fun setOutItems(){
+        _outRecycleItems.value = _recycleItems.value
     }
 
     fun setOpenFlag(item: RecycleItem){

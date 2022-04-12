@@ -1,4 +1,4 @@
-package com.nisilab.simpletodo
+package com.nisilab.simpletodo.dialog
 
 import android.app.Dialog
 import android.app.TimePickerDialog

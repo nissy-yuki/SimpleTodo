@@ -16,8 +16,9 @@ class ItemDataBindingViewController(
                     id("todo_item"+item.id)
                     title(item.title)
                     deadLine(item.deadLine)
-                    tag(item.tag)
-                    text(item.text)
+                    tag(if(!item.tag.isNullOrBlank()) item.tag else "non")
+                    text(if(!item.text.isNullOrBlank()) item.text else "non")
+                    isOpen(item.isOpen)
                     onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
                     onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton(item) } )
                 }

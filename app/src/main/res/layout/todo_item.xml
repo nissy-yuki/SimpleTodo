@@ -79,12 +79,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:onClick="@{onClickOpenButton}"
                     android:visibility="@{isOpen ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/titleText"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
-                    android:clickable="true"
-                    android:onClick="@{onClickOpenButton}"/>
+                    app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
                 <ImageView
                     android:id="@+id/closeButton"
@@ -92,12 +94,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:onClick="@{onClickCloseButton}"
                     android:visibility="@{isOpen ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
-                    app:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
-                    android:clickable="true"
-                    android:onClick="@{onClickCloseButton}"/>
+                    app:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -107,6 +111,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{text}"
+                    android:visibility="@{isOpen ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/checkButton" />
