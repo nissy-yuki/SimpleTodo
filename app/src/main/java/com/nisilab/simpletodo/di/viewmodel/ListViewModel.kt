@@ -10,6 +10,8 @@ import com.nisilab.simpletodo.di.database.TodoItem
 import com.nisilab.simpletodo.di.repository.DataRepository
 import com.nisilab.simpletodo.recycle.RecycleItem
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 
@@ -31,8 +33,6 @@ class ListViewModel @ViewModelInject constructor(
     fun setAllItems(){
         viewModelScope.launch {
             _todoItems.value = repository.getItems()
-            if(!_todoItems.value.isNullOrEmpty()) _todoItems.value!!.sortedWith( compareBy<TodoItem> {it.deadLine} )
-            setRecycleItems()
         }
     }
 
@@ -64,7 +64,12 @@ class ListViewModel @ViewModelInject constructor(
     }
 
     fun setOutItems(){
-        _outRecycleItems.value = _recycleItems.value
+        val list = _recycleItems.value
+        // sort deadLine
+        Collections.sort(list){ v1, v2 ->
+            v1.deadLine.compareTo(v2.deadLine)
+        }
+        _outRecycleItems.value = list
     }
 
     fun setOpenFlag(item: RecycleItem){

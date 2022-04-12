@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 data class RecycleItem(
     val id: Int = 0,
     val title: String,
-    val deadLine: String,
+    val deadLine: LocalDateTime,
     val tag: String?,
     val text: String?,
     val isFinish: Boolean,

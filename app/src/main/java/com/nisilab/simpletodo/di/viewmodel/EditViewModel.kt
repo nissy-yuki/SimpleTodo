@@ -26,10 +26,10 @@ class EditViewModel@ViewModelInject constructor(
     private val _editDate: MutableLiveData<LocalDate> = MutableLiveData()
     private val _editTime: MutableLiveData<LocalTime> = MutableLiveData()
 
-    val editTitle: LiveData<String> = _editTitle
-    val editDeadLine: LiveData<LocalDateTime> = _editDeadLine
-    val editTag: LiveData<String> = _editTag
-    val editText: LiveData<String> = _editText
+//    val editTitle: LiveData<String> = _editTitle
+//    val editDeadLine: LiveData<LocalDateTime> = _editDeadLine
+//    val editTag: LiveData<String> = _editTag
+//    val editText: LiveData<String> = _editText
 
     val editDate: LiveData<LocalDate> = _editDate
     val editTime: LiveData<LocalTime> = _editTime
@@ -39,10 +39,10 @@ class EditViewModel@ViewModelInject constructor(
             repository.addItem(
                 TodoItem(
                     id = 0,
-                    title = editTitle.value!!,
-                    deadLine = editDeadLine.value!!,
-                    tag = editTag.value,
-                    text = editText.value
+                    title = _editTitle.value!!,
+                    deadLine = _editDeadLine.value!!,
+                    tag = _editTag.value,
+                    text = _editText.value
                 )
             )
         }

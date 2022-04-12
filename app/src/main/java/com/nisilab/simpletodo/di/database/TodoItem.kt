@@ -19,7 +19,7 @@ data class TodoItem(
         return RecycleItem(
             id = this.id,
             title = this.title,
-            deadLine = this.deadLine.toString(),
+            deadLine = this.deadLine,
             tag = this.tag,
             text = this.text,
             isFinish = this.isFinish,

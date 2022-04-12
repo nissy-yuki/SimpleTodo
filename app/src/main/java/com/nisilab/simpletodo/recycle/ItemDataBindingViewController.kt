@@ -15,7 +15,7 @@ class ItemDataBindingViewController(
                 todoItem {
                     id("todo_item"+item.id)
                     title(item.title)
-                    deadLine(item.deadLine)
+                    deadLine(item.deadLine.toString())
                     tag(if(!item.tag.isNullOrBlank()) item.tag else "non")
                     text(if(!item.text.isNullOrBlank()) item.text else "non")
                     isOpen(item.isOpen)
