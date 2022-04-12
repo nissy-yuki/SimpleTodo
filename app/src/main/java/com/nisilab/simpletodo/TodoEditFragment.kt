@@ -52,6 +52,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         // 保存ボタンのクリックリスナーの設定
         binding.saveButton.setOnClickListener {
             if(!binding.titleEditor.text.isNullOrBlank() && !binding.dateEditor.text.isNullOrBlank() && !binding.timeEditor.text.isNullOrBlank()){
+                viewModel.addItem()
                 findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
             } else {
                 val message = "タイトル、または日時を入力してください"
@@ -59,20 +60,25 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             }
         }
 
+        // 戻るボタンのクリックリスナーの設定
         binding.toListButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        // dateEditorをタップすると日付選択ダイアログの表示
         binding.dateEditor.setOnClickListener {
             val newFragment = DatePick()
             newFragment.show(childFragmentManager, "datePicker")
         }
 
+        // timeEditorをタップすると時刻選択ダイアログの表示
         binding.timeEditor.setOnClickListener {
             val newFragment = TimePick()
             newFragment.show(childFragmentManager, "timePicker")
         }
 
+
+        // 以下三つは画面回転対応用の値保存
         binding.titleEditor.addTextChangedListener {
             viewModel.setEditTitle(it.toString())
         }
@@ -85,11 +91,13 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             viewModel.setEditText(it.toString())
         }
 
+        // dateEditorへの書き込み
         viewModel.editDate.observe(viewLifecycleOwner){
             viewModel.setDeadLine()
             binding.dateText = it.toString()
         }
 
+        // timeEditorへの書き込み
         viewModel.editTime.observe(viewLifecycleOwner){
             viewModel.setDeadLine()
             binding.timeText = it.toString()
@@ -98,10 +106,12 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         return binding.root
     }
 
+    // 日付選択のOKボタンのクリックリスナー
     override fun selectedDate(year: Int, month: Int, day: Int) {
         viewModel.setEditDate("%4d-%02d-%02d".format(year, month, day))
     }
 
+    // 時刻選択のOKボタンのクリックリスナー
     override fun selectedTime(hour: Int, minute: Int) {
         viewModel.setEditTime("%02d:%02d".format(hour, minute))
     }

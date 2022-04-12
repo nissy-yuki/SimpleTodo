@@ -48,6 +48,7 @@ class EditViewModel@ViewModelInject constructor(
         }
     }
 
+    // 各
     fun setEditTitle(value: String){
         _editTitle.value = value
     }
@@ -69,8 +70,7 @@ class EditViewModel@ViewModelInject constructor(
     }
 
     fun setDeadLine(){
-        Log.d("check","${_editDate.value} ${_editTime.value}")
-//        if(_editDate.value ) _editDeadLine.value = LocalDateTime.of(_editDate.value,_editTime.value)
+        if(_editDate.value != null && _editTime.value != null) _editDeadLine.value = LocalDateTime.of(_editDate.value,_editTime.value)
     }
 
 }
