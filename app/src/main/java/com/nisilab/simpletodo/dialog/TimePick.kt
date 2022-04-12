@@ -6,9 +6,10 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
+import java.time.LocalTime
 import java.util.*
 
-class TimePick: DialogFragment(),TimePickerDialog.OnTimeSetListener {
+class TimePick(private val iTime: LocalTime?): DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
     interface OnSelectedTimeListener {
         fun selectedTime(hour: Int, minute: Int)
@@ -32,8 +33,8 @@ class TimePick: DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        val minute = c.get(Calendar.MINUTE)
+        val hour = iTime?.hour ?: c.get(Calendar.HOUR_OF_DAY)
+        val minute = iTime?.minute ?: c.get(Calendar.MINUTE)
 
         return TimePickerDialog(requireContext(),this,hour,minute,true)
     }

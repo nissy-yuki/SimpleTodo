@@ -4,11 +4,13 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
+import java.time.LocalDate
 import java.util.*
 
-class DatePick: DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePick(private val iDate: LocalDate?): DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface OnSelectedDateListener {
         fun selectedDate(year: Int, month: Int, day: Int)
@@ -30,9 +32,9 @@ class DatePick: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val year = iDate?.year ?: c.get(Calendar.YEAR)
+        val month = iDate?.monthValue ?: c.get(Calendar.MONTH)
+        val day = iDate?.dayOfMonth ?: c.get(Calendar.DAY_OF_MONTH)
 
         return DatePickerDialog(requireContext(), this, year, month, day)
     }

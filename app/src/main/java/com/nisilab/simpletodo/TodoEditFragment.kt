@@ -68,13 +68,13 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
         // dateEditorをタップすると日付選択ダイアログの表示
         binding.dateEditor.setOnClickListener {
-            val newFragment = DatePick()
+            val newFragment = DatePick(viewModel.editDate.value)
             newFragment.show(childFragmentManager, "datePicker")
         }
 
         // timeEditorをタップすると時刻選択ダイアログの表示
         binding.timeEditor.setOnClickListener {
-            val newFragment = TimePick()
+            val newFragment = TimePick(viewModel.editTime.value)
             newFragment.show(childFragmentManager, "timePicker")
         }
 
