@@ -51,10 +51,12 @@ class ListViewModel @ViewModelInject constructor(
     // 削除ボタンを押された時
     fun deleteItem(item: TodoItem){
         viewModelScope.launch {
+            _todoItems.value = _todoItems.value!!.minus(item)
             repository.deleteItem(item)
         }
     }
 
+    // 管理用itemのセット
     fun setRecycleItems(){
         var list: MutableList<RecycleItem> = mutableListOf()
         _todoItems.value!!.forEach {
@@ -63,6 +65,7 @@ class ListViewModel @ViewModelInject constructor(
         _recycleItems.value = list
     }
 
+    // 出力用itemのセット
     fun setOutItems(){
         val list = _recycleItems.value
         // sort deadLine
@@ -72,6 +75,7 @@ class ListViewModel @ViewModelInject constructor(
         _outRecycleItems.value = list
     }
 
+    // item の開閉
     fun setOpenFlag(item: RecycleItem){
         val list = _recycleItems.value!!
         list.find { it.id == item.id }!!.isOpen = true
