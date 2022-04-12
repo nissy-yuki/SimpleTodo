@@ -40,12 +40,15 @@ class ListViewModel @ViewModelInject constructor(
     fun updateItem(item: TodoItem){
         viewModelScope.launch {
             item.isFinish = !item.isFinish
+            updateTodoItems(item)
             repository.updateItem(item)
         }
     }
 
-    fun updateRecycleItems(){
-
+    fun updateTodoItems(item: TodoItem){
+        val list = _todoItems.value!!
+        list.find { it.id == item.id }!!.isFinish = item.isFinish
+        _todoItems.value = list
     }
 
     // 削除ボタンを押された時
