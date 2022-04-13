@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="com.nisilab.simpletodo.R"/>
         <variable
             name="title"
             type="String" />
@@ -21,10 +22,16 @@
             name="isOpen"
             type="Boolean" />
         <variable
+            name="isFinish"
+            type="Boolean" />
+        <variable
             name="onClickOpenButton"
             type="View.OnClickListener" />
         <variable
             name="onClickCloseButton"
+            type="View.OnClickListener" />
+        <variable
+            name="onClickFinishButton"
             type="View.OnClickListener" />
     </data>
 
@@ -54,7 +61,8 @@
                     android:layout_margin="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_check_24" />
+                    app:srcCompat="@{ isFinish ? R.drawable.ic_baseline_finish_check_24 : R.drawable.ic_baseline_no_finish_check_24 }"
+                    android:onClick="@{ onClickFinishButton }"/>
 
                 <TextView
                     android:id="@+id/deadLineText"

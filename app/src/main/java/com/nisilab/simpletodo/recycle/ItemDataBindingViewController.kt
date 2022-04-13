@@ -1,8 +1,8 @@
 package com.nisilab.simpletodo.recycle
 
+import android.util.Log
 import android.view.View
 import com.airbnb.epoxy.Typed2EpoxyController
-import com.nisilab.simpletodo.di.database.TodoItem
 import com.nisilab.simpletodo.noDataItem
 import com.nisilab.simpletodo.todoItem
 
@@ -19,6 +19,11 @@ class ItemDataBindingViewController(
                     tag(if(!item.tag.isNullOrBlank()) item.tag else "non")
                     text(if(!item.text.isNullOrBlank()) item.text else "non")
                     isOpen(item.isOpen)
+                    isFinish(item.isFinish)
+                    Log.d("checkValue","recycle item is ${item.isFinish}")
+                    onClickFinishButton( View.OnClickListener {
+                        if (item.isFinish) selectListener.onClickFinishButton(item) else selectListener.onClickNoFinishButton(item)
+                    } )
                     onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
                     onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton(item) } )
                 }
@@ -33,6 +38,8 @@ class ItemDataBindingViewController(
     }
 
     interface SelectListener {
+        fun onClickFinishButton(item: RecycleItem)
+        fun onClickNoFinishButton(item: RecycleItem)
         fun onClickOpenButton(item: RecycleItem)
         fun onClickCloseButton(item: RecycleItem)
     }

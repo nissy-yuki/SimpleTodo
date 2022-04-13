@@ -40,12 +40,13 @@ class ListViewModel @ViewModelInject constructor(
     fun updateItem(item: TodoItem){
         viewModelScope.launch {
             item.isFinish = !item.isFinish
+            Log.d("checkValue","update item is ${item.isFinish}")
             updateTodoItems(item)
             repository.updateItem(item)
         }
     }
 
-    fun updateTodoItems(item: TodoItem){
+    private fun updateTodoItems(item: TodoItem){
         val list = _todoItems.value!!
         list.find { it.id == item.id }!!.isFinish = item.isFinish
         _todoItems.value = list

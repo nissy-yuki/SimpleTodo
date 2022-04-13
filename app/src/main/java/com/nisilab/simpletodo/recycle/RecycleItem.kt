@@ -1,5 +1,6 @@
 package com.nisilab.simpletodo.recycle
 
+import com.nisilab.simpletodo.di.database.TodoItem
 import java.time.LocalDateTime
 
 data class RecycleItem(
@@ -10,4 +11,15 @@ data class RecycleItem(
     val text: String?,
     val isFinish: Boolean,
     var isOpen: Boolean
-)
+){
+    fun toTodoItem(): TodoItem{
+        return TodoItem(
+            id = this.id,
+            title = this.title,
+            deadLine = this.deadLine,
+            tag = this.tag,
+            text = this.text,
+            isFinish = this.isFinish
+        )
+    }
+}
