@@ -20,10 +20,9 @@ class ItemDataBindingViewController(
                     text(if(!item.text.isNullOrBlank()) item.text else "non")
                     isOpen(item.isOpen)
                     isFinish(item.isFinish)
-                    Log.d("checkValue","recycle item is ${item.isFinish}")
-                    onClickFinishButton( View.OnClickListener {
-                        if (item.isFinish) selectListener.onClickFinishButton(item) else selectListener.onClickNoFinishButton(item)
-                    } )
+                    Log.d("checkValue","${item.isFinish}")
+                    onClickFinishButton( View.OnClickListener { selectListener.onClickFinishButton(item) })
+                    onClickNoFinishButton( View.OnClickListener { selectListener.onClickNoFinishButton(item)  })
                     onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
                     onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton(item) } )
                 }

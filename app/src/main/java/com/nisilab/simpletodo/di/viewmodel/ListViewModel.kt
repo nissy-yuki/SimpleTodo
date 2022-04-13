@@ -37,9 +37,9 @@ class ListViewModel @ViewModelInject constructor(
     }
 
     // 完了ボタンを押された時
-    fun updateItem(item: TodoItem){
+    fun updateItem(item: TodoItem, flg: Boolean){
         viewModelScope.launch {
-            item.isFinish = !item.isFinish
+            item.isFinish = flg
             Log.d("checkValue","update item is ${item.isFinish}")
             updateTodoItems(item)
             repository.updateItem(item)

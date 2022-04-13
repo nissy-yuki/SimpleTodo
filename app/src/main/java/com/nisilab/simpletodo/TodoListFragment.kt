@@ -67,11 +67,11 @@ class TodoListFragment : Fragment() {
             }
 
             override fun onClickFinishButton(item: RecycleItem) {
-                viewModel.updateItem(item.toTodoItem())
+                viewModel.updateItem(item.toTodoItem(),false)
             }
 
             override fun onClickNoFinishButton(item: RecycleItem) {
-                viewModel.updateItem(item.toTodoItem())
+                viewModel.updateItem(item.toTodoItem(),true)
             }
         })
 
