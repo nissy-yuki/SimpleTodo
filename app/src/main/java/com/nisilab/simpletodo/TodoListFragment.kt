@@ -1,11 +1,15 @@
 package com.nisilab.simpletodo
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -35,6 +39,7 @@ class TodoListFragment : Fragment() {
 
     private val viewModel: ListViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,10 +57,12 @@ class TodoListFragment : Fragment() {
 
         viewModel.setAllItems()
 
+        // backButtonのクリックリスナーの設定
         binding.toEditButton.setOnClickListener {
             findNavController().navigate(R.id.action_todoListFragment_to_todoEditFragment)
         }
 
+        // recycleItemに使われるクリックリスナーの設定
         val itemsViewController = ItemDataBindingViewController(object :
             ItemDataBindingViewController.SelectListener {
             override fun onClickOpenButton(item: RecycleItem) {
@@ -96,6 +103,8 @@ class TodoListFragment : Fragment() {
 
         return binding.root
     }
+
+
 
     companion object {
         /**
