@@ -1,10 +1,14 @@
 package com.nisilab.simpletodo
 
+import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -34,6 +38,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
     private var param2: String? = null
 
     private val viewModel: EditViewModel by viewModels()
+    private lateinit var binding: FragmentTodoEditBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +52,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
+        binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
             R.layout.fragment_todo_edit,container,false)
 
         // 保存ボタンのクリックリスナーの設定
@@ -105,6 +110,37 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val editors: List<EditText> = listOf(binding.titleEditor,binding.tagEditor,binding.tagEditor)
+
+        editors.forEach { item ->
+            item.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    //キーボード非表示
+                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                }
+            }
+            // Enterキーを押すとfocusをviewに写す
+            item.setOnKeyListener { v, code, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && code == KeyEvent.KEYCODE_ENTER){
+                    view.requestFocus()
+//                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                    imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                    return@setOnKeyListener true
+                }
+                return@setOnKeyListener false
+            }
+        }
+
+        view.setOnTouchListener { v, event ->
+            view.requestFocus()
+            v?.onTouchEvent(event) ?: true
+        }
     }
 
     // 日付選択のOKボタンのクリックリスナー
