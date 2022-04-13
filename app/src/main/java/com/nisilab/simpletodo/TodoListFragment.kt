@@ -82,6 +82,7 @@ class TodoListFragment : Fragment() {
             }
         })
 
+        // todoListのアダプターを適応
         binding.todoList.apply {
             this.adapter = itemsViewController.adapter
             this.layoutManager = LinearLayoutManager(context).apply {
@@ -103,8 +104,6 @@ class TodoListFragment : Fragment() {
 
         return binding.root
     }
-
-
 
     companion object {
         /**
