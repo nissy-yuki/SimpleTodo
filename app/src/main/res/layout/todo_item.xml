@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -36,6 +36,9 @@
         <variable
             name="onClickNoFinishButton"
             type="View.OnClickListener" />
+        <variable
+            name="onClickDeleteButton"
+            type="View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,10 +65,10 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="16dp"
+                    android:onClick="@{ isFinish ? onClickFinishButton : onClickNoFinishButton}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@{ isFinish ? R.drawable.ic_baseline_finish_check_24 : R.drawable.ic_baseline_no_finish_check_24 }"
-                    android:onClick="@{ isFinish ? onClickFinishButton : onClickNoFinishButton}"/>
+                    app:srcCompat="@{ isFinish ? R.drawable.ic_baseline_finish_check_24 : R.drawable.ic_baseline_no_finish_check_24 }" />
 
                 <TextView
                     android:id="@+id/deadLineText"
@@ -141,6 +144,37 @@
                     app:layout_constraintEnd_toStartOf="@+id/openButton"
                     app:layout_constraintStart_toEndOf="@+id/checkButton"
                     app:layout_constraintTop_toBottomOf="@+id/checkButton" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="@{isOpen ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{onClickDeleteButton}"
+                    >
+
+                    <ImageView
+                        android:id="@+id/deleteButtonImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="19dp"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+                    <TextView
+                        android:id="@+id/deleteButtonText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/delete_button_text"
+                        android:textColor="#F52D2D" />
+                </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

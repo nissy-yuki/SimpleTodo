@@ -80,6 +80,10 @@ class TodoListFragment : Fragment() {
             override fun onClickNoFinishButton(item: RecycleItem) {
                 viewModel.updateItem(item.toTodoItem(),true)
             }
+
+            override fun onClickDeleteButton(item: RecycleItem) {
+                viewModel.deleteItem(item.toTodoItem())
+            }
         })
 
         // todoListのアダプターを適応

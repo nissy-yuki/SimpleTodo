@@ -4,11 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1645" />
+        <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1645" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_todo_edit.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_todo_list.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/no_data_item.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/todo_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/todo_item.xml" value="0.5622283935546875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1645" />
       </map>
     </option>

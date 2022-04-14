@@ -5,6 +5,7 @@ import android.view.View
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.nisilab.simpletodo.noDataItem
 import com.nisilab.simpletodo.todoItem
+import kotlinx.coroutines.selects.select
 
 class ItemDataBindingViewController(
     private val selectListener: SelectListener
@@ -24,6 +25,7 @@ class ItemDataBindingViewController(
                     onClickNoFinishButton( View.OnClickListener { selectListener.onClickNoFinishButton(item)  })
                     onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
                     onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton(item) } )
+                    onClickDeleteButton( View.OnClickListener { selectListener.onClickDeleteButton(item)  } )
                 }
             }
         }else{
@@ -40,5 +42,6 @@ class ItemDataBindingViewController(
         fun onClickNoFinishButton(item: RecycleItem)
         fun onClickOpenButton(item: RecycleItem)
         fun onClickCloseButton(item: RecycleItem)
+        fun onClickDeleteButton(item: RecycleItem)
     }
 }
