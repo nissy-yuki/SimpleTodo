@@ -39,6 +39,9 @@
         <variable
             name="onClickDeleteButton"
             type="View.OnClickListener" />
+        <variable
+            name="onClickEditButton"
+            type="View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

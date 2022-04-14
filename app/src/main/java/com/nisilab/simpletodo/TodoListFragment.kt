@@ -20,6 +20,8 @@ import com.nisilab.simpletodo.dialog.ConfirmationDialogFragment
 import com.nisilab.simpletodo.recycle.ItemDataBindingViewController
 import com.nisilab.simpletodo.recycle.RecycleItem
 import dagger.hilt.android.AndroidEntryPoint
+import java.sql.Date
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,6 +91,13 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
                     .build()
                     .show(childFragmentManager,"Confirmation")
 
+            }
+
+            override fun onClickEditButton(item: RecycleItem) {
+                val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val tf = DateTimeFormatter.ofPattern("HH:mm")
+                val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(item.id,item.title,item.tag,item.text,item.deadLine.format(df),item.deadLine.format(tf))
+                findNavController().navigate(action)
             }
         })
 

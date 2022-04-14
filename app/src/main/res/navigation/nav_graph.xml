@@ -35,11 +35,11 @@
         <argument
             android:name="itemTag"
             app:argType="string"
-            android:defaultValue='""' />
+            app:nullable="true" />
         <argument
             android:name="itemText"
             app:argType="string"
-            android:defaultValue='""' />
+            app:nullable="true" />
         <argument
             android:name="itemDate"
             app:argType="string"

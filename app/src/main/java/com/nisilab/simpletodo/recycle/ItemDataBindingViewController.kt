@@ -26,6 +26,7 @@ class ItemDataBindingViewController(
                     onClickOpenButton( View.OnClickListener { selectListener.onClickOpenButton(item) } )
                     onClickCloseButton( View.OnClickListener { selectListener.onClickCloseButton(item) } )
                     onClickDeleteButton( View.OnClickListener { selectListener.onClickDeleteButton(item)  } )
+                    onClickEditButton( View.OnClickListener { selectListener.onClickEditButton(item) } )
                 }
             }
         }else{
@@ -43,5 +44,6 @@ class ItemDataBindingViewController(
         fun onClickOpenButton(item: RecycleItem)
         fun onClickCloseButton(item: RecycleItem)
         fun onClickDeleteButton(item: RecycleItem)
+        fun onClickEditButton(item: RecycleItem)
     }
 }
