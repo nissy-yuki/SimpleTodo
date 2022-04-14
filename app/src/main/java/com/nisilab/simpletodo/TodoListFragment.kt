@@ -96,7 +96,14 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
             override fun onClickEditButton(item: RecycleItem) {
                 val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val tf = DateTimeFormatter.ofPattern("HH:mm")
-                val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(item.id,item.title,item.tag,item.text,item.deadLine.format(df),item.deadLine.format(tf))
+                val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
+                    itemId = item.id,
+                    itemTitle = item.title,
+                    itemTag = item.tag,
+                    itemText = item.text,
+                    itemDate = item.deadLine.format(df).toString(),
+                    itemTime = item.deadLine.format(tf).toString()
+                )
                 findNavController().navigate(action)
             }
         })
