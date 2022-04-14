@@ -97,12 +97,7 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
                 val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val tf = DateTimeFormatter.ofPattern("HH:mm")
                 val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
-                    itemId = item.id,
-                    itemTitle = item.title,
-                    itemTag = item.tag,
-                    itemText = item.text,
-                    itemDate = item.deadLine.format(df).toString(),
-                    itemTime = item.deadLine.format(tf).toString()
+                    itemData = item.toTodoItem()
                 )
                 findNavController().navigate(action)
             }
