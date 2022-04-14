@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.ListViewModel
+import com.nisilab.simpletodo.dialog.ConfirmationDialogFragment
 import com.nisilab.simpletodo.recycle.ItemDataBindingViewController
 import com.nisilab.simpletodo.recycle.RecycleItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 @AndroidEntryPoint
-class TodoListFragment : Fragment() {
+class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -82,7 +83,8 @@ class TodoListFragment : Fragment() {
             }
 
             override fun onClickDeleteButton(item: RecycleItem) {
-                viewModel.deleteItem(item.toTodoItem())
+                val dialog = ConfirmationDialogFragment()
+                dialog.show(childFragmentManager, "Confirmation")
             }
         })
 
@@ -127,5 +129,9 @@ class TodoListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onPositiveButton() {
+        Log.d("check","hoge")
     }
 }
