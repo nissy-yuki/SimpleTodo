@@ -83,8 +83,12 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
             }
 
             override fun onClickDeleteButton(item: RecycleItem) {
-                val dialog = ConfirmationDialogFragment()
-                dialog.show(childFragmentManager, "Confirmation")
+                ConfirmationDialogFragment.Builder(parentFragment!!)
+                    .setId(item.id)
+                    .setTitle(item.title)
+                    .build()
+                    .show(childFragmentManager,"Confirmation")
+
             }
         })
 
@@ -131,7 +135,7 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
             }
     }
 
-    override fun onPositiveButton() {
-        Log.d("check","hoge")
+    override fun onPositiveButton(id: Int) {
+        viewModel.deleteItem(id)
     }
 }

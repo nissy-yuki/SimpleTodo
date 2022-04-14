@@ -5,14 +5,47 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import com.nisilab.simpletodo.di.database.TodoItem
 
 class ConfirmationDialogFragment: DialogFragment() {
 
     interface DialogSelectedListener{
-        fun onPositiveButton()
+        fun onPositiveButton(id: Int)
     }
 
     private lateinit var listener: DialogSelectedListener
+
+    private var title = ""
+    private var iId = 0
+
+    companion object {
+        private const val TITLE_KEY = "TitleKey"
+        private const val ID_KEY = "idKey"
+    }
+
+
+    class Builder(private val fragment: Fragment) {
+        private val bundle = Bundle()
+
+        fun setTitle(title: String): Builder {
+            return this.apply {
+                bundle.putString(TITLE_KEY,title)
+            }
+        }
+
+        fun setId(id: Int): Builder{
+            return this.apply {
+                bundle.putInt(ID_KEY,id)
+            }
+        }
+
+        fun build(): ConfirmationDialogFragment {
+            return ConfirmationDialogFragment().apply {
+                arguments = bundle
+            }
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -28,11 +61,17 @@ class ConfirmationDialogFragment: DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireActivity())
-        builder.setTitle("Here Title")
-            .setMessage("Here Message")
+
+        arguments?.let {
+            title = it.getString(TITLE_KEY, "")
+            iId = it.getInt(ID_KEY, 0)
+        }
+
+        builder.setTitle(title)
+            .setMessage("このTodoを消していいですか？")
             .setPositiveButton("done") { dialog, id ->
                 dismiss()
-                listener.onPositiveButton()
+                listener.onPositiveButton(iId)
             }
             .setNegativeButton("cancel") { dialog, id ->
                 dismiss()

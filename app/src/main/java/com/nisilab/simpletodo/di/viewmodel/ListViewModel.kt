@@ -53,8 +53,9 @@ class ListViewModel @ViewModelInject constructor(
     }
 
     // 削除ボタンを押された時
-    fun deleteItem(item: TodoItem){
+    fun deleteItem(id: Int){
         viewModelScope.launch {
+            val item = searchItem(id)
             _todoItems.value = _todoItems.value!!.minus(item)
             repository.deleteItem(item)
         }
@@ -90,5 +91,10 @@ class ListViewModel @ViewModelInject constructor(
         val list = _recycleItems.value!!
         list.find { it.id == item.id }!!.isOpen = false
         _recycleItems.value = list
+    }
+
+    fun searchItem(id: Int): TodoItem{
+        Log.d("checkValue",id.toString())
+        return _todoItems.value!!.find { it.id == id }!!
     }
 }
