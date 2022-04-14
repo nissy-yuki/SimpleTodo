@@ -27,6 +27,6 @@
         <argument
             android:name="itemData"
             app:argType="com.nisilab.simpletodo.di.database.TodoItem"
-            app:nullable="true"/>
+            app:nullable="true" />
     </fragment>
 </navigation>
