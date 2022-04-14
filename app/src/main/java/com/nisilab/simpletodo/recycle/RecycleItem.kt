@@ -9,7 +9,7 @@ data class RecycleItem(
     val deadLine: LocalDateTime,
     val tag: String?,
     val text: String?,
-    val isFinish: Boolean,
+    var isFinish: Boolean,
     var isOpen: Boolean
 ){
     fun toTodoItem(): TodoItem{

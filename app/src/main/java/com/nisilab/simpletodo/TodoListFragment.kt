@@ -75,11 +75,11 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
             }
 
             override fun onClickFinishButton(item: RecycleItem) {
-                viewModel.updateItem(item.toTodoItem(),false)
+                viewModel.updateItem(item,false)
             }
 
             override fun onClickNoFinishButton(item: RecycleItem) {
-                viewModel.updateItem(item.toTodoItem(),true)
+                viewModel.updateItem(item,true)
             }
 
             override fun onClickDeleteButton(item: RecycleItem) {
