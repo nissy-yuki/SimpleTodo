@@ -13,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.nisilab.simpletodo.databinding.FragmentTodoEditBinding
 import com.nisilab.simpletodo.di.viewmodel.EditViewModel
@@ -39,6 +40,8 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
     private val viewModel: EditViewModel by viewModels()
     private lateinit var binding: FragmentTodoEditBinding
+
+    private val args: TodoEditFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +100,21 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             viewModel.setEditText(it.toString())
         }
 
+        // titleEditorへの書き込み
+        viewModel.editTitle.observe(viewLifecycleOwner){
+            binding.titleEditor.setText(it)
+        }
+
+        // tagEditorへの書き込み
+        viewModel.editTag.observe(viewLifecycleOwner){
+            binding.tagEditor.setText(it)
+        }
+
+        // textEditorへの書き込み
+        viewModel.editText.observe(viewLifecycleOwner){
+            binding.textEditor.setText(it)
+        }
+
         // dateEditorへの書き込み
         viewModel.editDate.observe(viewLifecycleOwner){
             viewModel.setDeadLine()
@@ -108,6 +126,8 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             viewModel.setDeadLine()
             binding.timeText = it.toString()
         }
+
+        if(args.itemData != null) viewModel.setInitialItem(args.itemData!!)
 
         return binding.root
     }

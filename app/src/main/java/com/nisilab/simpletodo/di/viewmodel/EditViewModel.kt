@@ -26,13 +26,20 @@ class EditViewModel@ViewModelInject constructor(
     private val _editDate: MutableLiveData<LocalDate> = MutableLiveData()
     private val _editTime: MutableLiveData<LocalTime> = MutableLiveData()
 
-//    val editTitle: LiveData<String> = _editTitle
-//    val editDeadLine: LiveData<LocalDateTime> = _editDeadLine
-//    val editTag: LiveData<String> = _editTag
-//    val editText: LiveData<String> = _editText
+    val editTitle: LiveData<String> = _editTitle
+    val editTag: LiveData<String> = _editTag
+    val editText: LiveData<String> = _editText
 
     val editDate: LiveData<LocalDate> = _editDate
     val editTime: LiveData<LocalTime> = _editTime
+
+    fun setInitialItem(item: TodoItem){
+        setEditTitle(item.title)
+        if (!item.tag.isNullOrBlank()) setEditTag(item.tag!!)
+        if (!item.text.isNullOrBlank()) setEditText(item.text!!)
+        setDeadLine(item.deadLine)
+    }
+
 
     fun addItem(){
         viewModelScope.launch {
@@ -72,5 +79,10 @@ class EditViewModel@ViewModelInject constructor(
     fun setDeadLine(){
         if(_editDate.value != null && _editTime.value != null) _editDeadLine.value = LocalDateTime.of(_editDate.value,_editTime.value)
     }
+
+    fun setDeadLine(dl: LocalDateTime){
+        _editDeadLine.value = dl
+    }
+
 
 }
