@@ -100,20 +100,20 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             viewModel.setEditText(it.toString())
         }
 
-        // titleEditorへの書き込み
-        viewModel.editTitle.observe(viewLifecycleOwner){
-            binding.titleEditor.setText(it)
-        }
-
-        // tagEditorへの書き込み
-        viewModel.editTag.observe(viewLifecycleOwner){
-            binding.tagEditor.setText(it)
-        }
-
-        // textEditorへの書き込み
-        viewModel.editText.observe(viewLifecycleOwner){
-            binding.textEditor.setText(it)
-        }
+//        // titleEditorへの書き込み
+//        viewModel.editTitle.observe(viewLifecycleOwner){
+//            binding.titleEditor.setText(it)
+//        }
+//
+//        // tagEditorへの書き込み
+//        viewModel.editTag.observe(viewLifecycleOwner){
+//            binding.tagEditor.setText(it)
+//        }
+//
+//        // textEditorへの書き込み
+//        viewModel.editText.observe(viewLifecycleOwner){
+//            binding.textEditor.setText(it)
+//        }
 
         // dateEditorへの書き込み
         viewModel.editDate.observe(viewLifecycleOwner){
@@ -135,7 +135,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val editors: List<EditText> = listOf(binding.titleEditor,binding.tagEditor,binding.tagEditor)
+        val editors: List<EditText> = listOf(binding.titleEditor,binding.tagEditor,binding.textEditor)
 
         editors.forEach { item ->
             item.setOnFocusChangeListener { v, hasFocus ->
@@ -146,15 +146,15 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
                 }
             }
             // Enterキーを押すとfocusをviewに写す
-            item.setOnKeyListener { v, code, event ->
-                if (event.action == KeyEvent.ACTION_DOWN && code == KeyEvent.KEYCODE_ENTER){
-                    view.requestFocus()
-//                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                    imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                    return@setOnKeyListener true
-                }
-                return@setOnKeyListener false
-            }
+//            item.setOnKeyListener { v, code, event ->
+//                if (event.action == KeyEvent.ACTION_DOWN && code == KeyEvent.KEYCODE_ENTER){
+//                    view.requestFocus()
+////                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+////                    imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+//                    return@setOnKeyListener true
+//                }
+//                return@setOnKeyListener false
+//            }
         }
 
         view.setOnTouchListener { v, event ->

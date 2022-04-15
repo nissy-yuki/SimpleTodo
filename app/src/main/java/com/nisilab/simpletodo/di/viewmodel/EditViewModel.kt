@@ -26,6 +26,8 @@ class EditViewModel@ViewModelInject constructor(
     private val _editDate: MutableLiveData<LocalDate> = MutableLiveData()
     private val _editTime: MutableLiveData<LocalTime> = MutableLiveData()
 
+    private val _editId: MutableLiveData<Int> = MutableLiveData(0)
+
     val editTitle: LiveData<String> = _editTitle
     val editTag: LiveData<String> = _editTag
     val editText: LiveData<String> = _editText
@@ -34,6 +36,7 @@ class EditViewModel@ViewModelInject constructor(
     val editTime: LiveData<LocalTime> = _editTime
 
     fun setInitialItem(item: TodoItem){
+        _editId.value = item.id
         setEditTitle(item.title)
         if (!item.tag.isNullOrBlank()) setEditTag(item.tag!!)
         if (!item.text.isNullOrBlank()) setEditText(item.text!!)
@@ -42,16 +45,21 @@ class EditViewModel@ViewModelInject constructor(
 
 
     fun addItem(){
+        val item = TodoItem(
+            id = _editId.value!!,
+            title = _editTitle.value!!,
+            deadLine = _editDeadLine.value!!,
+            tag = _editTag.value,
+            text = _editText.value
+        )
         viewModelScope.launch {
-            repository.addItem(
-                TodoItem(
-                    id = 0,
-                    title = _editTitle.value!!,
-                    deadLine = _editDeadLine.value!!,
-                    tag = _editTag.value,
-                    text = _editText.value
-                )
-            )
+
+            if (_editId.value == 0){
+                repository.addItem(item)
+            } else {
+                repository.updateItem(item)
+            }
+
         }
     }
 

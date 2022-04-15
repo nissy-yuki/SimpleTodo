@@ -62,7 +62,10 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
 
         // backButtonのクリックリスナーの設定
         binding.toEditButton.setOnClickListener {
-            findNavController().navigate(R.id.action_todoListFragment_to_todoEditFragment)
+            val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
+                itemData = null
+            )
+            findNavController().navigate(action)
         }
 
         // recycleItemに使われるクリックリスナーの設定
@@ -94,8 +97,6 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
             }
 
             override fun onClickEditButton(item: RecycleItem) {
-                val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                val tf = DateTimeFormatter.ofPattern("HH:mm")
                 val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
                     itemData = item.toTodoItem()
                 )
