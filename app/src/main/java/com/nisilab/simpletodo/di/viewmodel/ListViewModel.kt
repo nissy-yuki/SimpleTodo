@@ -39,15 +39,15 @@ class ListViewModel @ViewModelInject constructor(
     // 完了ボタンを押された時
     fun updateItem(item: RecycleItem, flg: Boolean){
         viewModelScope.launch {
+            updateItems(item,flg)
             item.isFinish = flg
-            updateItems(item)
             repository.updateItem(item.toTodoItem())
         }
     }
 
-    private fun updateItems(item: RecycleItem){
-        _todoItems.value!!.find { it.id == item.id }!!.isFinish = item.isFinish
-        updateRecycleItem(item)
+    private fun updateItems(item: RecycleItem, flg: Boolean){
+        _todoItems.value!!.find { it.id == item.id }!!.isFinish = flg
+        updateRecycleItem(item, flg)
     }
 
     // 削除ボタンを押された時
@@ -92,13 +92,14 @@ class ListViewModel @ViewModelInject constructor(
     }
 
     fun searchItem(id: Int): TodoItem{
-        Log.d("checkValue",id.toString())
         return _todoItems.value!!.find { it.id == id }!!
     }
 
-    fun updateRecycleItem(item: RecycleItem){
+    fun updateRecycleItem(item: RecycleItem, flg: Boolean){
         val list = _recycleItems.value!!.toMutableList()
-        list[list.lastIndexOf(item)] = item
+        Log.d("checkValue", "${list}")
+        Log.d("checkValue", "${item}")
+        list[list.lastIndexOf(item)].isFinish = flg
         _recycleItems.value = list.toList()
     }
 }

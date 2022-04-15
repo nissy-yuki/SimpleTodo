@@ -57,9 +57,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
     ): View? {
         args.itemData?.let { item ->
             viewModel.setInitialItem(item)
-            binding.titleEditor.setText(viewModel.editTitle.value)
-            binding.tagEditor.setText(viewModel.editTag.value)
-            binding.textEditor.setText(viewModel.editText.value)
         }
 
         binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
@@ -95,16 +92,17 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
 
         // 以下三つは画面回転対応用の値保存
-
+        binding.titleEditor.setText(viewModel.editTitle.value)
         binding.titleEditor.addTextChangedListener {
             viewModel.setEditTitle(it.toString())
         }
 
+        binding.tagEditor.setText(viewModel.editTag.value)
         binding.tagEditor.addTextChangedListener {
             viewModel.setEditTag(it.toString())
         }
 
-
+        binding.textEditor.setText(viewModel.editText.value)
         binding.textEditor.addTextChangedListener {
             viewModel.setEditText(it.toString())
         }
