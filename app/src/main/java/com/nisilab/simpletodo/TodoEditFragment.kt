@@ -55,6 +55,13 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        args.itemData?.let { item ->
+            viewModel.setInitialItem(item)
+            binding.titleEditor.setText(viewModel.editTitle.value)
+            binding.tagEditor.setText(viewModel.editTag.value)
+            binding.textEditor.setText(viewModel.editText.value)
+        }
+
         binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
             R.layout.fragment_todo_edit,container,false)
 
@@ -88,6 +95,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
 
         // 以下三つは画面回転対応用の値保存
+
         binding.titleEditor.addTextChangedListener {
             viewModel.setEditTitle(it.toString())
         }
@@ -96,24 +104,10 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             viewModel.setEditTag(it.toString())
         }
 
+
         binding.textEditor.addTextChangedListener {
             viewModel.setEditText(it.toString())
         }
-
-//        // titleEditorへの書き込み
-//        viewModel.editTitle.observe(viewLifecycleOwner){
-//            binding.titleEditor.setText(it)
-//        }
-//
-//        // tagEditorへの書き込み
-//        viewModel.editTag.observe(viewLifecycleOwner){
-//            binding.tagEditor.setText(it)
-//        }
-//
-//        // textEditorへの書き込み
-//        viewModel.editText.observe(viewLifecycleOwner){
-//            binding.textEditor.setText(it)
-//        }
 
         // dateEditorへの書き込み
         viewModel.editDate.observe(viewLifecycleOwner){
@@ -127,7 +121,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             binding.timeText = it.toString()
         }
 
-        if(args.itemData != null) viewModel.setInitialItem(args.itemData!!)
+
 
         return binding.root
     }

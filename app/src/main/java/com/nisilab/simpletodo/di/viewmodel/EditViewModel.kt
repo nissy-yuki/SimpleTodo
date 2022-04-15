@@ -90,6 +90,8 @@ class EditViewModel@ViewModelInject constructor(
 
     fun setDeadLine(dl: LocalDateTime){
         _editDeadLine.value = dl
+        _editDate.value = dl.toLocalDate()
+        _editTime.value = dl.toLocalTime()
     }
 
 
