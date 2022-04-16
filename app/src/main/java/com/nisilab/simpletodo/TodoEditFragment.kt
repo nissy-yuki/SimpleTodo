@@ -9,6 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -119,6 +124,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             binding.timeText = it.toString()
         }
 
+        binding.titleText.setContent { textLabel(value = "title") }
 
 
         return binding.root
@@ -184,6 +190,32 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
                 }
             }
     }
+}
 
+@Composable
+fun textLabel(value: String) = Text(value, fontSize = 20.sp)
+
+//@Composable
+//fun titleText(value:String) = Text(value, fontSize = 20.sp)
+//
+//@Composable
+//fun deadLineText(value:String) = Text(value, fontSize = 20.sp)
+//
+//@Composable
+//fun tagText(value:String) = Text(value, fontSize = 20.sp)
+//
+//@Composable
+//fun textText(value:String) = Text(value, fontSize = 20.sp)
+
+
+
+
+@Composable
+fun tagEditor(value: String){
+
+}
+
+@Composable
+fun textEditor(value: String){
 
 }
