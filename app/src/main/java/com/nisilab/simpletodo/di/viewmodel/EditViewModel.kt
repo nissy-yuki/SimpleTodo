@@ -34,6 +34,7 @@ class EditViewModel@ViewModelInject constructor(
 
     val editDate: LiveData<LocalDate> = _editDate
     val editTime: LiveData<LocalTime> = _editTime
+    val editDeadLine: LiveData<LocalDateTime> = _editDeadLine
 
     fun setInitialItem(item: TodoItem){
         _editId.value = item.id

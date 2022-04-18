@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import androidx.core.widget.addTextChangedListener
@@ -24,6 +25,7 @@ import com.nisilab.simpletodo.di.viewmodel.EditViewModel
 import com.nisilab.simpletodo.dialog.DatePick
 import com.nisilab.simpletodo.dialog.TimePick
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.NullPointerException
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,17 +67,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
         binding = DataBindingUtil.inflate<FragmentTodoEditBinding>(inflater,
             R.layout.fragment_todo_edit,container,false)
-
-        // 保存ボタンのクリックリスナーの設定
-        binding.saveButton.setOnClickListener {
-            if(!binding.titleEditor.text.isNullOrBlank() && !binding.dateEditor.text.isNullOrBlank() && !binding.timeEditor.text.isNullOrBlank()){
-                viewModel.addItem()
-                findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
-            } else {
-                val message = "タイトル、または日時を入力してください"
-                Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-            }
-        }
 
         // dateEditorをタップすると日付選択ダイアログの表示
         binding.dateEditor.setOnClickListener {
@@ -122,11 +113,14 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         binding.deadLineText.setContent { textLabel(value = "deadLine") }
         binding.tagText.setContent { textLabel(value = "tag") }
         binding.textText.setContent{ textLabel(value = "text") }
-        binding.toListButton.setContent { Button(onClick = {findNavController().popBackStack()}) {
-            Text(text = "back")
+        
+        binding.toListButton.setContent { 
+            Button(onClick = { findNavController().popBackStack() }) {
+                Text(text = "back")
         } }
+        
         binding.saveButton.setContent { Button(onClick = {
-            if (!binding.titleEditor.text.isNullOrBlank() && !binding.dateEditor.text.isNullOrBlank() && !binding.timeEditor.text.isNullOrBlank()) {
+            if (!viewModel.editTitle.value.isNullOrBlank() && !viewModel.editDeadLine.value.toString().isNullOrBlank()) {
                 viewModel.addItem()
                 findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
             } else {
@@ -136,6 +130,11 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         }) {
             Text(text = "save")
         } }
+        
+//        binding.titleEditor.setContent {
+//            titleTextField(value = viewModel.editTitle.value ?: "", changeValue = { viewModel.setEditTitle(it) })
+//        }
+
 
 
         return binding.root
@@ -144,7 +143,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val editors: List<EditText> = listOf(binding.titleEditor,binding.tagEditor,binding.textEditor)
+        val editors: List<EditText> = listOf(binding.tagEditor,binding.textEditor)
 
         editors.forEach { item ->
             item.setOnFocusChangeListener { v, hasFocus ->
@@ -154,16 +153,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
                     imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 }
             }
-            // Enterキーを押すとfocusをviewに写す
-//            item.setOnKeyListener { v, code, event ->
-//                if (event.action == KeyEvent.ACTION_DOWN && code == KeyEvent.KEYCODE_ENTER){
-//                    view.requestFocus()
-////                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-////                    imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-//                    return@setOnKeyListener true
-//                }
-//                return@setOnKeyListener false
-//            }
         }
 
         view.setOnTouchListener { v, event ->
@@ -208,3 +197,8 @@ fun textLabel(value: String) = Text(value, fontSize = 20.sp)
 
 @Composable
 fun backButton(toBack: Boolean) = Button(onClick = {toBack} ){ Text(text = "back") }
+
+@Composable
+fun elmTextField(value: String,changeValue: (String) -> Unit,hint: String){
+    TextField(value = value, onValueChange = changeValue, placeholder = { Text(text = hint) })
+}
