@@ -82,10 +82,10 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 
 
         // 以下三つは画面回転対応用の値保存
-        binding.titleEditor.setText(viewModel.editTitle.value)
-        binding.titleEditor.addTextChangedListener {
-            viewModel.setEditTitle(it.toString())
-        }
+//        binding.titleEditor.setText(viewModel.editTitle.value)
+//        binding.titleEditor.addTextChangedListener {
+//            viewModel.setEditTitle(it.toString())
+//        }
 
         binding.tagEditor.setText(viewModel.editTag.value)
         binding.tagEditor.addTextChangedListener {
@@ -130,10 +130,15 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         }) {
             Text(text = "save")
         } }
-        
-//        binding.titleEditor.setContent {
-//            titleTextField(value = viewModel.editTitle.value ?: "", changeValue = { viewModel.setEditTitle(it) })
-//        }
+        binding.titleEditor.setContent {
+            elmTextField(value = viewModel.editTitle.value ?: "", changeValue = { viewModel.setEditTitle(it) }, hint = "title")
+        }
+        viewModel.editTitle.observe(viewLifecycleOwner){
+            binding.titleEditor.setContent {
+                elmTextField(value = viewModel.editTitle.value ?: "", changeValue = { viewModel.setEditTitle(it) }, hint = "title")
+            }
+        }
+
 
 
 
