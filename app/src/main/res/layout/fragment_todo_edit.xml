@@ -43,38 +43,69 @@
 <!--            android:text="@string/title_text"-->
 <!--             />-->
 
-        <TextView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/deadLineText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/deadLine_text"
-            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/timeEditor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dateEditor" />
+            app:layout_constraintTop_toTopOf="@+id/dateEditor"
+            />
 
-        <TextView
+<!--        <TextView-->
+<!--            android:id="@+id/deadLineText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:text="@string/deadLine_text"-->
+<!--            android:textSize="20sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/timeEditor"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/dateEditor" />-->
+
+
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/tagText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="@string/tag_text"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeEditor" />
+            app:layout_constraintTop_toBottomOf="@+id/timeEditor"
+            />
 
-        <TextView
+<!--        <TextView-->
+<!--            android:id="@+id/tagText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:text="@string/tag_text"-->
+<!--            android:textSize="20sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/timeEditor" />-->
+
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/textText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="64dp"
-            android:text="@string/text_Text"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tagText" />
+            app:layout_constraintTop_toBottomOf="@+id/tagText"
+            />
+
+<!--        <TextView-->
+<!--            android:id="@+id/textText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="64dp"-->
+<!--            android:text="@string/text_Text"-->
+<!--            android:textSize="20sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tagText" />-->
 
         <EditText
             android:id="@+id/titleEditor"

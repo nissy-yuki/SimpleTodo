@@ -125,6 +125,9 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         }
 
         binding.titleText.setContent { textLabel(value = "title") }
+        binding.deadLineText.setContent { textLabel(value = "deadLine") }
+        binding.tagText.setContent { textLabel(value = "tag") }
+        binding.textText.setContent{ textLabel(value = "text") }
 
 
         return binding.root
