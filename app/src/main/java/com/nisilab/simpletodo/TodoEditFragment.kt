@@ -2,21 +2,20 @@ package com.nisilab.simpletodo
 
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
@@ -78,11 +77,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
             }
         }
 
-        // 戻るボタンのクリックリスナーの設定
-        binding.toListButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
         // dateEditorをタップすると日付選択ダイアログの表示
         binding.dateEditor.setOnClickListener {
             val newFragment = DatePick(viewModel.editDate.value)
@@ -128,6 +122,20 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
         binding.deadLineText.setContent { textLabel(value = "deadLine") }
         binding.tagText.setContent { textLabel(value = "tag") }
         binding.textText.setContent{ textLabel(value = "text") }
+        binding.toListButton.setContent { Button(onClick = {findNavController().popBackStack()}) {
+            Text(text = "back")
+        } }
+        binding.saveButton.setContent { Button(onClick = {
+            if (!binding.titleEditor.text.isNullOrBlank() && !binding.dateEditor.text.isNullOrBlank() && !binding.timeEditor.text.isNullOrBlank()) {
+                viewModel.addItem()
+                findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
+            } else {
+                val message = "タイトル、または日時を入力してください"
+                Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+            }
+        }) {
+            Text(text = "save")
+        } }
 
 
         return binding.root
@@ -198,27 +206,5 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener, TimePick.O
 @Composable
 fun textLabel(value: String) = Text(value, fontSize = 20.sp)
 
-//@Composable
-//fun titleText(value:String) = Text(value, fontSize = 20.sp)
-//
-//@Composable
-//fun deadLineText(value:String) = Text(value, fontSize = 20.sp)
-//
-//@Composable
-//fun tagText(value:String) = Text(value, fontSize = 20.sp)
-//
-//@Composable
-//fun textText(value:String) = Text(value, fontSize = 20.sp)
-
-
-
-
 @Composable
-fun tagEditor(value: String){
-
-}
-
-@Composable
-fun textEditor(value: String){
-
-}
+fun backButton(toBack: Boolean) = Button(onClick = {toBack} ){ Text(text = "back") }
