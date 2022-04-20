@@ -135,11 +135,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                     )
                 }
 
-
-//                OutlinedTextField(modifier = Modifier.clickable {
-//                    DatePick(viewModel.editDate.value).show(childFragmentManager, "datePicker")
-//                }, value = viewModel.editDate, onValueChange = {}, readOnly = true, label = "date")
-
                 elmTextField(
                     value = viewModel.editTag.value ?: "",
                     label = "tag",
@@ -160,6 +155,7 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                         if (!viewModel.editTitle.value.isNullOrBlank() && !viewModel.editDeadLine.value.toString()
                                 .isNullOrBlank()
                         ) {
+                            viewModel.addItem()
                             findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
                         } else {
                             val message = "タイトル、または日時を入力してください"
@@ -171,78 +167,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                 }
             }
         }
-
-//        // dateEditorをタップすると日付選択ダイアログの表示
-//        binding.dateEditor.setOnClickListener {
-//            val newFragment = DatePick(viewModel.editDate.value)
-//            newFragment.show(childFragmentManager, "datePicker")
-//        }
-//
-//        // timeEditorをタップすると時刻選択ダイアログの表示
-//        binding.timeEditor.setOnClickListener {
-//            val newFragment = TimePick(viewModel.editTime.value)
-//            newFragment.show(childFragmentManager, "timePicker")
-//        }
-//
-//
-//        // 以下三つは画面回転対応用の値保存
-////        binding.titleEditor.setText(viewModel.editTitle.value)
-////        binding.titleEditor.addTextChangedListener {
-////            viewModel.setEditTitle(it.toString())
-////        }
-//
-//        binding.tagEditor.setText(viewModel.editTag.value)
-//        binding.tagEditor.addTextChangedListener {
-//            viewModel.setEditTag(it.toString())
-//        }
-//
-//        binding.textEditor.setText(viewModel.editText.value)
-//        binding.textEditor.addTextChangedListener {
-//            viewModel.setEditText(it.toString())
-//        }
-//
-//        // dateEditorへの書き込み
-//        viewModel.editDate.observe(viewLifecycleOwner){
-//            viewModel.setDeadLine()
-//            binding.dateText = it.toString()
-//        }
-//
-//        // timeEditorへの書き込み
-//        viewModel.editTime.observe(viewLifecycleOwner){
-//            viewModel.setDeadLine()
-//            binding.timeText = it.toString()
-//        }
-//
-//        binding.titleText.setContent { textLabel(value = "title") }
-//        binding.deadLineText.setContent { textLabel(value = "deadLine") }
-//        binding.tagText.setContent { textLabel(value = "tag") }
-//        binding.textText.setContent{ textLabel(value = "text") }
-//
-//        binding.toListButton.setContent {
-//            Button(onClick = { findNavController().popBackStack() }) {
-//                Text(text = "back")
-//        } }
-//
-//        binding.saveButton.setContent { Button(onClick = {
-//            if (!viewModel.editTitle.value.isNullOrBlank() && !viewModel.editDeadLine.value.toString().isNullOrBlank()) {
-//                viewModel.addItem()
-//                findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
-//            } else {
-//                val message = "タイトル、または日時を入力してください"
-//                Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-//            }
-//        }) {
-//            Text(text = "save")
-//        } }
-//        binding.titleEditor.setContent {
-//            elmTextField(value = viewModel.editTitle.value ?: "", changeValue = { viewModel.setEditTitle(it) }, hint = "title")
-//        }
-//        viewModel.editTitle.observe(viewLifecycleOwner){
-//            binding.titleEditor.setContent {
-//                elmTextField(value = viewModel.editTitle.value ?: "", changeValue = { viewModel.setEditTitle(it) }, hint = "title")
-//            }
-//        }
-
 
         return binding.root
     }
