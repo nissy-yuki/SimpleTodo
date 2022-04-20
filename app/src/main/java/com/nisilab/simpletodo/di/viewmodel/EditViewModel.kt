@@ -1,6 +1,5 @@
 package com.nisilab.simpletodo.di.viewmodel
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,8 +38,8 @@ class EditViewModel@ViewModelInject constructor(
     fun setInitialItem(item: TodoItem){
         _editId.value = item.id
         setEditTitle(item.title)
-        if (!item.tag.isNullOrBlank()) setEditTag(item.tag!!)
-        if (!item.text.isNullOrBlank()) setEditText(item.text!!)
+        item.tag?.let { setEditTag(it) }
+        item.text?.let { setEditText(it) }
         setDeadLine(item.deadLine)
     }
 
@@ -65,7 +64,7 @@ class EditViewModel@ViewModelInject constructor(
     }
 
     // 各
-    fun setEditTitle(value: String){
+    fun setEditTitle(value: String) {
         _editTitle.value = value
     }
 

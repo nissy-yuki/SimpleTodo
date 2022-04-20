@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
@@ -78,14 +80,74 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
         )
 
         binding.editScreen.setContent {
-            editScreen({ findNavController().popBackStack() }, { flg ->
-                if (flg) {
-                    findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
-                } else {
-                    val message = "タイトル、または日時を入力してください"
-                    Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+            val focusManager = LocalFocusManager.current
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null,
+                    ) { focusManager.clearFocus() }
+            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                elmTextField(
+                    value = viewModel.editTitle.value ?: "",
+                    label = "title",
+                    changeValue = { viewModel.setEditTitle(it) })
+
+                OutlinedTextField(value = viewModel.editDate.value.toString(),
+                    label = { Text(text = "date") },
+                    onValueChange = {},
+                    modifier = Modifier.clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null
+                    ) {
+                        DatePick(viewModel.editDate.value).show(
+                            childFragmentManager,
+                            "datePicker"
+                        )
+                    },
+                    enabled = false
+                )
+
+//                OutlinedTextField(modifier = Modifier.clickable {
+//                    DatePick(viewModel.editDate.value).show(childFragmentManager, "datePicker")
+//                }, value = viewModel.editDate, onValueChange = {}, readOnly = true, label = "date")
+
+                elmTextField(
+                    value = viewModel.editTag.value ?: "",
+                    label = "tag",
+                    changeValue = { viewModel.setEditTag(it) })
+                elmTextField(
+                    value = viewModel.editText.value ?: "",
+                    label = "text",
+                    changeValue = { viewModel.setEditText(it) })
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Button(onClick = { findNavController().popBackStack() }) {
+                        Text(text = "back")
+                    }
+                    Button(onClick = {
+                        if (!viewModel.editTitle.value.isNullOrBlank() && !viewModel.editDeadLine.value.toString()
+                                .isNullOrBlank()
+                        ) {
+                            findNavController().navigate(R.id.action_todoEditFragment_to_todoListFragment)
+                        } else {
+                            val message = "タイトル、または日時を入力してください"
+                            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+                        }
+                    }) {
+                        Text(text = "save")
+                    }
                 }
-            })
+            }
         }
 
 //        // dateEditorをタップすると日付選択ダイアログの表示
@@ -163,27 +225,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        val editors: List<EditText> = listOf(binding.tagEditor,binding.textEditor)
-//
-//        editors.forEach { item ->
-//            item.setOnFocusChangeListener { v, hasFocus ->
-//                if (!hasFocus) {
-//                    //キーボード非表示
-//                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                    imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-//                }
-//            }
-//        }
-//
-//        view.setOnTouchListener { v, event ->
-//            view.requestFocus()
-//            v?.onTouchEvent(event) ?: true
-//        }
-//    }
-
     // 日付選択のOKボタンのクリックリスナー
     override fun selectedDate(year: Int, month: Int, day: Int) {
         viewModel.setEditDate("%4d-%02d-%02d".format(year, month, day))
@@ -216,46 +257,31 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
 }
 
 
-@Composable
-fun editScreen(toBack: () -> Boolean, toSave: (Boolean) -> Unit) {
-    val focusManager = LocalFocusManager.current
-    Box(modifier = Modifier
-        .fillMaxSize().clickable(interactionSource = MutableInteractionSource(),indication = null,) { focusManager.clearFocus() },contentAlignment = Alignment.TopCenter) {
-        Column() {
-
-            val title = elmTextField(value = "", label = "title")
-
-            val tag = elmTextField(value  =  "", label = "tag")
-
-            val text = elmTextField(value =  "" , label = "text")
-            
-            Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                Button(onClick = { toBack() }) {
-                    Text(text = "back")
-                }
-                Button(onClick = { Log.d("checkValue",title) }) {
-                    Text(text = "save")
-              }
-
-            }
-        }
-
-
-    }
-}
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun elmTextField(value: String, label: String?): String {
+fun elmTextField(value: String, label: String?, changeValue: (String) -> Unit) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var editText by rememberSaveable { mutableStateOf(value) }
-    OutlinedTextField(modifier = Modifier.padding(16.dp),value = editText,
-        onValueChange = { editText = it },
+    OutlinedTextField(
+        modifier = Modifier.padding(16.dp), value = editText,
+        onValueChange = {
+            editText = it
+            changeValue(editText)
+        },
         label = { Text(text = label ?: "") },
         keyboardActions = KeyboardActions(onDone = {
             keyboardController?.hide()
         }),
         singleLine = true
     )
-    return editText
+}
+
+@Composable
+fun dateTimeField(value: String) {
+    OutlinedTextField(
+        modifier = Modifier.clickable { },
+        value = value,
+        onValueChange = { },
+        readOnly = true,
+    )
 }
