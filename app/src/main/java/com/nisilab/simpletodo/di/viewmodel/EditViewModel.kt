@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 class EditViewModel@ViewModelInject constructor(
@@ -18,12 +19,12 @@ class EditViewModel@ViewModelInject constructor(
 ): ViewModel() {
 
     private val _editTitle: MutableLiveData<String> = MutableLiveData()
-    private val _editDeadLine: MutableLiveData<LocalDateTime> = MutableLiveData(LocalDateTime.now())
+    private val _editDeadLine: MutableLiveData<LocalDateTime> = MutableLiveData()
     private val _editTag: MutableLiveData<String> = MutableLiveData()
     private val _editText: MutableLiveData<String> = MutableLiveData()
 
     private val _editDate: MutableLiveData<LocalDate> = MutableLiveData(LocalDate.now())
-    private val _editTime: MutableLiveData<LocalTime> = MutableLiveData(LocalTime.now())
+    private val _editTime: MutableLiveData<LocalTime> = MutableLiveData(LocalTime.now().truncatedTo(ChronoUnit.MINUTES))
 
     private val _editId: MutableLiveData<Int> = MutableLiveData(0)
 
@@ -85,7 +86,7 @@ class EditViewModel@ViewModelInject constructor(
     }
 
     fun setDeadLine(){
-        if(_editDate.value != null && _editTime.value != null) _editDeadLine.value = LocalDateTime.of(_editDate.value,_editTime.value)
+        if(_editDate.value != null && _editTime.value != null) _editDeadLine.value = LocalDateTime.of(_editDate.value,_editTime.value!!.truncatedTo(ChronoUnit.MINUTES))
     }
 
     fun setDeadLine(dl: LocalDateTime){

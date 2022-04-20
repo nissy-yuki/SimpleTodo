@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
@@ -17,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
@@ -30,8 +34,11 @@ import com.nisilab.simpletodo.di.viewmodel.EditViewModel
 import com.nisilab.simpletodo.dialog.DatePick
 import com.nisilab.simpletodo.dialog.TimePick
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -99,10 +106,11 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                 Column() {
                     var editDate by rememberSaveable {
                         mutableStateOf(
-                            viewModel.editDate.value ?: LocalDate.now()
+                            viewModel.editDate.value
                         )
                     }
                     viewModel.editDate.observe(viewLifecycleOwner) {
+                        viewModel.setDeadLine()
                         editDate = it
                     }
                     dateTimeField(
@@ -117,16 +125,17 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                     )
                     var editTime by rememberSaveable {
                         mutableStateOf(
-                            viewModel.editTime.value ?: LocalTime.now()
+                            viewModel.editTime.value
                         )
                     }
                     viewModel.editTime.observe(viewLifecycleOwner) {
+                        viewModel.setDeadLine()
                         editTime = it
                     }
                     dateTimeField(
                         value = editTime.toString(),
                         showDialog = {
-                            TimePick(viewModel.editTime.value).show(
+                            TimePick(editTime).show(
                                 childFragmentManager,
                                 "datePicker"
                             )
@@ -203,13 +212,25 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
 }
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun elmTextField(value: String, label: String?, changeValue: (String) -> Unit) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val requester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
     var editText by rememberSaveable { mutableStateOf(value) }
     OutlinedTextField(
-        modifier = Modifier.padding(16.dp), value = editText,
+        modifier = Modifier
+            .padding(16.dp)
+            .bringIntoViewRequester(requester)
+            .onFocusEvent { focusState ->
+                if (focusState.isFocused) {
+                    coroutineScope.launch {
+                        delay(200)
+                        requester.bringIntoView()
+                    }
+                }
+            }, value = editText,
         onValueChange = {
             editText = it
             changeValue(editText)
