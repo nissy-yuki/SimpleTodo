@@ -157,10 +157,8 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    Button(onClick = { findNavController().popBackStack() }) {
-                        Text(text = "back")
-                    }
-                    Button(onClick = {
+                    actionButton(value = "back") { findNavController().popBackStack() }
+                    actionButton(value = "save") {
                         if (!viewModel.editTitle.value.isNullOrBlank() && !viewModel.editDeadLine.value.toString()
                                 .isNullOrBlank()
                         ) {
@@ -170,8 +168,6 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                             val message = "タイトル、または日時を入力してください"
                             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
                         }
-                    }) {
-                        Text(text = "save")
                     }
                 }
             }
@@ -257,4 +253,11 @@ fun dateTimeField(value: String, showDialog: () -> Unit, label: String) {
         label = { Text(text = label) },
         enabled = false,
     )
+}
+
+@Composable
+fun actionButton(value: String, action: () -> Unit) {
+    Button(onClick = { action() }) {
+        Text(text = value)
+    }
 }
