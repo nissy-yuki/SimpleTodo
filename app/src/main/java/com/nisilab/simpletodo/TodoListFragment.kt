@@ -9,6 +9,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -60,12 +68,14 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
 
         viewModel.setAllItems()
 
-        // backButtonのクリックリスナーの設定
-        binding.toEditButton.setOnClickListener {
-            val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
-                itemData = null
-            )
-            findNavController().navigate(action)
+        // toEditButtonのクリックリスナーの設定
+        binding.toEditButton.setContent {
+            toEditFab {
+                val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
+                    itemData = null
+                )
+                findNavController().navigate(action)
+            }
         }
 
         // recycleItemに使われるクリックリスナーの設定
@@ -149,5 +159,22 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
 
     override fun onPositiveButton(id: Int) {
         viewModel.deleteItem(id)
+    }
+}
+
+@Composable
+fun todoList(){
+
+}
+
+@Composable
+fun todoListItem(){
+
+}
+
+@Composable
+fun toEditFab(action: () -> Unit){
+    FloatingActionButton(modifier = Modifier.padding(32.dp),onClick = { action() }) {
+        Icon(Icons.Filled.Add, contentDescription = "add")
     }
 }
