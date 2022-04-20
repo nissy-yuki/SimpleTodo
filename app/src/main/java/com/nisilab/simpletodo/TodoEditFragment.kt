@@ -99,7 +99,11 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                     label = "title",
                     changeValue = { viewModel.setEditTitle(it) })
 
-                OutlinedTextField(value = viewModel.editDate.value.toString(),
+                var editDate by rememberSaveable { mutableStateOf(viewModel.editDate.value ?: "") }
+                viewModel.editDate.observe(viewLifecycleOwner){
+                    editDate = it
+                }
+                OutlinedTextField(value = editDate.toString() ,
                     label = { Text(text = "date") },
                     onValueChange = {},
                     modifier = Modifier.clickable(
