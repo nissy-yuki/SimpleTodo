@@ -18,12 +18,12 @@ class EditViewModel@ViewModelInject constructor(
 ): ViewModel() {
 
     private val _editTitle: MutableLiveData<String> = MutableLiveData()
-    private val _editDeadLine: MutableLiveData<LocalDateTime> = MutableLiveData()
+    private val _editDeadLine: MutableLiveData<LocalDateTime> = MutableLiveData(LocalDateTime.now())
     private val _editTag: MutableLiveData<String> = MutableLiveData()
     private val _editText: MutableLiveData<String> = MutableLiveData()
 
-    private val _editDate: MutableLiveData<LocalDate> = MutableLiveData()
-    private val _editTime: MutableLiveData<LocalTime> = MutableLiveData()
+    private val _editDate: MutableLiveData<LocalDate> = MutableLiveData(LocalDate.now())
+    private val _editTime: MutableLiveData<LocalTime> = MutableLiveData(LocalTime.now())
 
     private val _editId: MutableLiveData<Int> = MutableLiveData(0)
 

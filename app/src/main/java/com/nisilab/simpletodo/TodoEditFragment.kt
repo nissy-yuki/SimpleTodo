@@ -1,26 +1,22 @@
 package com.nisilab.simpletodo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
@@ -34,6 +30,8 @@ import com.nisilab.simpletodo.di.viewmodel.EditViewModel
 import com.nisilab.simpletodo.dialog.DatePick
 import com.nisilab.simpletodo.dialog.TimePick
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.LocalTime
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,25 +96,45 @@ class TodoEditFragment : Fragment(), DatePick.OnSelectedDateListener,
                     value = viewModel.editTitle.value ?: "",
                     label = "title",
                     changeValue = { viewModel.setEditTitle(it) })
-
-                var editDate by rememberSaveable { mutableStateOf(viewModel.editDate.value ?: "") }
-                viewModel.editDate.observe(viewLifecycleOwner){
-                    editDate = it
-                }
-                OutlinedTextField(value = editDate.toString() ,
-                    label = { Text(text = "date") },
-                    onValueChange = {},
-                    modifier = Modifier.clickable(
-                        interactionSource = MutableInteractionSource(),
-                        indication = null
-                    ) {
-                        DatePick(viewModel.editDate.value).show(
-                            childFragmentManager,
-                            "datePicker"
+                Column() {
+                    var editDate by rememberSaveable {
+                        mutableStateOf(
+                            viewModel.editDate.value ?: LocalDate.now()
                         )
-                    },
-                    enabled = false
-                )
+                    }
+                    viewModel.editDate.observe(viewLifecycleOwner) {
+                        editDate = it
+                    }
+                    dateTimeField(
+                        value = editDate.toString(),
+                        showDialog = {
+                            DatePick(viewModel.editDate.value).show(
+                                childFragmentManager,
+                                "datePicker"
+                            )
+                        },
+                        label = "date"
+                    )
+                    var editTime by rememberSaveable {
+                        mutableStateOf(
+                            viewModel.editTime.value ?: LocalTime.now()
+                        )
+                    }
+                    viewModel.editTime.observe(viewLifecycleOwner) {
+                        editTime = it
+                    }
+                    dateTimeField(
+                        value = editTime.toString(),
+                        showDialog = {
+                            TimePick(viewModel.editTime.value).show(
+                                childFragmentManager,
+                                "datePicker"
+                            )
+                        },
+                        label = "time"
+                    )
+                }
+
 
 //                OutlinedTextField(modifier = Modifier.clickable {
 //                    DatePick(viewModel.editDate.value).show(childFragmentManager, "datePicker")
@@ -281,11 +299,17 @@ fun elmTextField(value: String, label: String?, changeValue: (String) -> Unit) {
 }
 
 @Composable
-fun dateTimeField(value: String) {
+fun dateTimeField(value: String, showDialog: () -> Unit, label: String) {
     OutlinedTextField(
-        modifier = Modifier.clickable { },
         value = value,
-        onValueChange = { },
-        readOnly = true,
+        onValueChange = {},
+        modifier = Modifier.clickable(
+            interactionSource = MutableInteractionSource(),
+            indication = null
+        ) {
+            showDialog()
+        },
+        label = { Text(text = label) },
+        enabled = false,
     )
 }
