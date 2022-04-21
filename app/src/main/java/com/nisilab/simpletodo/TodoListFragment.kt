@@ -1,35 +1,39 @@
 package com.nisilab.simpletodo
 
-import android.content.Context
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.compose.ui.unit.sp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.nisilab.simpletodo.databinding.FragmentTodoListBinding
 import com.nisilab.simpletodo.di.viewmodel.ListViewModel
 import com.nisilab.simpletodo.dialog.ConfirmationDialogFragment
-import com.nisilab.simpletodo.recycle.ItemDataBindingViewController
 import com.nisilab.simpletodo.recycle.RecycleItem
 import dagger.hilt.android.AndroidEntryPoint
-import java.sql.Date
-import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,7 +47,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 @AndroidEntryPoint
-class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedListener {
+class TodoListFragment : Fragment(), ConfirmationDialogFragment.DialogSelectedListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -63,76 +67,71 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentTodoListBinding>(inflater,
-            R.layout.fragment_todo_list,container,false)
+        val binding = DataBindingUtil.inflate<FragmentTodoListBinding>(
+            inflater,
+            R.layout.fragment_todo_list, container, false
+        )
+        binding.listScreen.setContent {
 
-        viewModel.setAllItems()
+            viewModel.setAllItems()
 
-        // toEditButtonのクリックリスナーの設定
-        binding.toEditButton.setContent {
-            toEditFab {
+            listScreen(viewModel = viewModel) {
                 val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
                     itemData = null
                 )
                 findNavController().navigate(action)
             }
+
         }
 
-        // recycleItemに使われるクリックリスナーの設定
-        val itemsViewController = ItemDataBindingViewController(object :
-            ItemDataBindingViewController.SelectListener {
-            override fun onClickOpenButton(item: RecycleItem) {
-                viewModel.setOpenFlag(item)
-            }
+//        // recycleItemに使われるクリックリスナーの設定
+//        val itemsViewController = ItemDataBindingViewController(object :
+//            ItemDataBindingViewController.SelectListener {
+//            override fun onClickOpenButton(item: RecycleItem) {
+//                viewModel.setOpenFlag(item)
+//            }
+//
+//            override fun onClickCloseButton(item: RecycleItem) {
+//                viewModel.setCloseFlag(item)
+//            }
+//
+//            override fun onClickFinishButton(item: RecycleItem) {
+//                viewModel.updateItem(item,false)
+//            }
+//
+//            override fun onClickNoFinishButton(item: RecycleItem) {
+//                viewModel.updateItem(item,true)
+//            }
+//
+//            override fun onClickDeleteButton(item: RecycleItem) {
+//                ConfirmationDialogFragment.Builder(parentFragment!!)
+//                    .setId(item.id)
+//                    .setTitle(item.title)
+//                    .build()
+//                    .show(childFragmentManager,"Confirmation")
+//
+//            }
+//
+//            override fun onClickEditButton(item: RecycleItem) {
+//                val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
+//                    itemData = item.toTodoItem()
+//                )
+//                findNavController().navigate(action)
+//            }
+//        })
+//
+//        // todoListのアダプターを適応
+//        binding.todoList.apply {
+//            this.adapter = itemsViewController.adapter
+//            this.layoutManager = LinearLayoutManager(context).apply {
+//                orientation = LinearLayoutManager.VERTICAL
+//            }
+//        }
+//
 
-            override fun onClickCloseButton(item: RecycleItem) {
-                viewModel.setCloseFlag(item)
-            }
-
-            override fun onClickFinishButton(item: RecycleItem) {
-                viewModel.updateItem(item,false)
-            }
-
-            override fun onClickNoFinishButton(item: RecycleItem) {
-                viewModel.updateItem(item,true)
-            }
-
-            override fun onClickDeleteButton(item: RecycleItem) {
-                ConfirmationDialogFragment.Builder(parentFragment!!)
-                    .setId(item.id)
-                    .setTitle(item.title)
-                    .build()
-                    .show(childFragmentManager,"Confirmation")
-
-            }
-
-            override fun onClickEditButton(item: RecycleItem) {
-                val action = TodoListFragmentDirections.actionTodoListFragmentToTodoEditFragment(
-                    itemData = item.toTodoItem()
-                )
-                findNavController().navigate(action)
-            }
-        })
-
-        // todoListのアダプターを適応
-        binding.todoList.apply {
-            this.adapter = itemsViewController.adapter
-            this.layoutManager = LinearLayoutManager(context).apply {
-                orientation = LinearLayoutManager.VERTICAL
-            }
-        }
-
-        viewModel.todoItems.observe(viewLifecycleOwner){
-            viewModel.setRecycleItems()
-        }
-
-        viewModel.recycleItems.observe(viewLifecycleOwner){
-            viewModel.setOutItems()
-        }
-
-        viewModel.outRecycleItems.observe(viewLifecycleOwner){
-            itemsViewController.setData(it,false)
-        }
+//        viewModel.outRecycleItems.observe(viewLifecycleOwner){
+//            itemsViewController.setData(it,false)
+//        }
 
         return binding.root
     }
@@ -163,18 +162,70 @@ class TodoListFragment : Fragment(),ConfirmationDialogFragment.DialogSelectedLis
 }
 
 @Composable
-fun todoList(){
+fun listScreen(viewModel: ListViewModel = viewModel(), toEdit: () -> Unit) {
+
+    val listItems by viewModel.recycleItems.observeAsState()
+
+    Log.d("checklist", "$listItems")
+
+    SideEffect {
+        Log.d("MainScreen", "composition!")
+    }
+
+    todoList(listItems = listItems, finishAction = viewModel::updateItem)
+    toEditFab {
+        toEdit()
+    }
 
 }
 
 @Composable
-fun todoListItem(){
-
+fun todoList(listItems: List<RecycleItem>?, finishAction: (RecycleItem) -> Unit) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        listItems?.forEach{ todo ->
+            item {
+                todoListItem(item = todo , checkClickListener = finishAction)
+            }
+        }
+    }
 }
 
 @Composable
-fun toEditFab(action: () -> Unit){
-    FloatingActionButton(modifier = Modifier.padding(32.dp),onClick = { action() }) {
-        Icon(Icons.Filled.Add, contentDescription = "add")
+fun todoListItem(item: RecycleItem, checkClickListener: (RecycleItem) -> Unit) {
+    SideEffect {
+        Log.d("listItem", "composition! ${item.id}")
+    }
+    Card(shape = RoundedCornerShape(20.dp)) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Icon(
+                    Icons.Filled.Check,
+                    contentDescription = "check",
+                    modifier = Modifier
+                        .size(45.dp)
+                        .padding(end = 8.dp)
+                        .clickable(enabled = true) {
+                            checkClickListener(item)
+                        },
+                    if (!item.isFinish) Color.Gray else Color.Green
+                )
+                Column(modifier = Modifier.padding(top = 5.dp)) {
+                    Text(text = item.deadLine.toString(), fontSize = 10.sp)
+                    Text(text = item.title, fontSize = 15.sp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun toEditFab(action: () -> Unit) {
+    Box(contentAlignment = Alignment.BottomEnd) {
+        FloatingActionButton(modifier = Modifier.padding(32.dp), onClick = { action() }) {
+            Icon(Icons.Filled.Add, contentDescription = "add")
+        }
     }
 }

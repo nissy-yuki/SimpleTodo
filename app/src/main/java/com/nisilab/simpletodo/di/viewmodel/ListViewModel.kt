@@ -22,8 +22,6 @@ class ListViewModel @ViewModelInject constructor(
     private val _recycleItems: MutableLiveData<List<RecycleItem>> = MutableLiveData()
     private val _outRecycleItems: MutableLiveData<List<RecycleItem>> = MutableLiveData()
 
-
-    val todoItems: LiveData<List<TodoItem>> = _todoItems
     // 全リサイクルアイテム
     val recycleItems: LiveData<List<RecycleItem>> = _recycleItems
     // 出力用リサイクルアイテム
@@ -33,21 +31,26 @@ class ListViewModel @ViewModelInject constructor(
     fun setAllItems(){
         viewModelScope.launch {
             _todoItems.value = repository.getItems()
+            setRecycleItems()
+            setOutItems()
         }
     }
 
     // 完了ボタンを押された時
-    fun updateItem(item: RecycleItem, flg: Boolean){
+    fun updateItem(item: RecycleItem){
+        item.isFinish = !item.isFinish
+        updateItems(item,item.isFinish)
         viewModelScope.launch {
-            updateItems(item,flg)
-            item.isFinish = flg
             repository.updateItem(item.toTodoItem())
         }
+        setRecycleItems()
+        setOutItems()
     }
 
     private fun updateItems(item: RecycleItem, flg: Boolean){
-        _todoItems.value!!.find { it.id == item.id }!!.isFinish = flg
-        updateRecycleItem(item, flg)
+        var list = _todoItems.value
+        list!!.find { it.id == item.id }!!.isFinish = flg
+        _todoItems.value = list
     }
 
     // 削除ボタンを押された時
@@ -95,11 +98,4 @@ class ListViewModel @ViewModelInject constructor(
         return _todoItems.value!!.find { it.id == id }!!
     }
 
-    fun updateRecycleItem(item: RecycleItem, flg: Boolean){
-        val list = _recycleItems.value!!.toMutableList()
-        Log.d("checkValue", "${list}")
-        Log.d("checkValue", "${item}")
-        list[list.lastIndexOf(item)].isFinish = flg
-        _recycleItems.value = list.toList()
-    }
 }
