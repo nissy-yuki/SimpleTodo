@@ -81,21 +81,8 @@ class ListViewModel @ViewModelInject constructor(
         _outRecycleItems.value = list
     }
 
-    // item の開閉
-//    fun setOpenFlag(item: RecycleItem){
-//        val list = _recycleItems.value!!
-//        list.find { it.id == item.id }!!.isOpen = true
-//        _recycleItems.value = list
-//    }
-//
-//    fun setCloseFlag(item: RecycleItem){
-//        val list = _recycleItems.value!!
-//        list.find { it.id == item.id }!!.isOpen = false
-//        _recycleItems.value = list
-//    }
-
     fun changeOpenFlag(item: RecycleItem){
-        Log.d("checkStamp","fire change open flg")
+        Log.d("checkStamp","fire change open flg $item")
         val list = _recycleItems.value!!
         list.find { it.id == item.id }!!.isOpen = !item.isOpen
         _recycleItems.value = list
