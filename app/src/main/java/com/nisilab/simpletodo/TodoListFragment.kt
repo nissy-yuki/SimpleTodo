@@ -8,18 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -172,7 +174,11 @@ fun listScreen(viewModel: ListViewModel = viewModel(), toEdit: () -> Unit) {
         Log.d("MainScreen", "composition!")
     }
 
-    todoList(listItems = listItems, finishAction = viewModel::updateItem)
+    todoList(
+        listItems = listItems,
+        finishAction = viewModel::updateItem,
+        openAction = viewModel::changeOpenFlag
+    )
     toEditFab {
         toEdit()
     }
@@ -180,46 +186,91 @@ fun listScreen(viewModel: ListViewModel = viewModel(), toEdit: () -> Unit) {
 }
 
 @Composable
-fun todoList(listItems: List<RecycleItem>?, finishAction: (RecycleItem) -> Unit) {
+fun todoList(
+    listItems: List<RecycleItem>?,
+    finishAction: (RecycleItem) -> Unit,
+    openAction: (RecycleItem) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        listItems?.forEach{ todo ->
+        listItems?.forEach { todo ->
             item {
-                todoListItem(item = todo , checkClickListener = finishAction)
+                todoListItem(
+                    item = todo,
+                    checkClickAction = finishAction,
+                    arrowClickAction = openAction
+                )
             }
         }
     }
 }
 
 @Composable
-fun todoListItem(item: RecycleItem, checkClickListener: (RecycleItem) -> Unit) {
+fun todoListItem(
+    item: RecycleItem,
+    checkClickAction: (RecycleItem) -> Unit,
+    arrowClickAction: (RecycleItem) -> Unit
+) {
     SideEffect {
         Log.d("listItem", "composition! ${item.id}")
     }
     Card(shape = RoundedCornerShape(20.dp)) {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
-                Icon(
-                    Icons.Filled.Check,
-                    contentDescription = "check",
-                    modifier = Modifier
-                        .size(45.dp)
-                        .padding(end = 8.dp)
-                        .clickable(enabled = true) {
-                            checkClickListener(item)
-                        },
-                    if (!item.isFinish) Color.Gray else Color.Green
-                )
-                Column(modifier = Modifier.padding(top = 5.dp)) {
-                    Text(text = item.deadLine.toString(), fontSize = 10.sp)
-                    Text(text = item.title, fontSize = 15.sp)
-                }
+                checkButton(item = item, action = checkClickAction)
+                listItemTitleSet(title = item.title, deadLine = item.deadLine.toString())
+                arrowButton(item = item, action = arrowClickAction)
             }
         }
     }
 }
+
+@Composable
+fun closeItemSet(){
+
+}
+
+@Composable
+fun arrowButton(item: RecycleItem, action: (RecycleItem) -> Unit){
+    val iconImg = if (!item.isOpen) Icons.Filled.ArrowDropDown else Icons.Filled.ArrowDropUp
+    Icon(iconImg, contentDescription = "Open", modifier = Modifier.clickable(
+        enabled = true,
+        interactionSource = remember { MutableInteractionSource() },
+        indication = rememberRipple(bounded = false)
+    ) {
+        action(item)
+    })
+}
+
+@Composable
+fun checkButton(item: RecycleItem,action: (RecycleItem) -> Unit){
+    Icon(
+        Icons.Filled.Check,
+        contentDescription = "check",
+        modifier = Modifier
+            .size(50.dp)
+            .padding(end = 8.dp)
+            .clickable(
+                enabled = true,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = false)
+            ) {
+                action(item)
+            },
+        if (!item.isFinish) Color.Gray else Color.Green
+    )
+}
+
+@Composable
+fun listItemTitleSet(title: String, deadLine: String){
+    Column(modifier = Modifier.padding(top = 5.dp)) {
+        Text(text = deadLine.toString(), fontSize = 10.sp)
+        Text(text = title, fontSize = 15.sp)
+    }
+}
+
 
 @Composable
 fun toEditFab(action: () -> Unit) {
