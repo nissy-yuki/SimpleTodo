@@ -73,16 +73,16 @@ class ListViewModel @ViewModelInject constructor(
         Collections.sort(_outRecycleItems.value){ v1, v2 ->
             v1.deadLine.compareTo(v2.deadLine)
         }
+        Log.d("checkValue","${_outRecycleItems.value}")
     }
 
     fun changeOpenFlag(item: RecycleItem){
-        Log.d("checkValue","$item")
         val list = _recycleItems.value!!
         list.find { it.id == item.id }!!.isOpen = !item.isOpen
         _recycleItems.value = list
     }
 
-    fun searchTodoItem(id: Int): TodoItem{
+    private fun searchTodoItem(id: Int): TodoItem{
         return _todoItems.value!!.find { it.id == id }!!
     }
 
