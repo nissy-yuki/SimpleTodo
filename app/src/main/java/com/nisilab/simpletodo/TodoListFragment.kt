@@ -75,6 +75,14 @@ class TodoListFragment : Fragment(), ConfirmationDialogFragment.DialogSelectedLi
         )
         binding.listScreen.setContent {
 
+            viewModel.todoItems.observe(viewLifecycleOwner){
+                viewModel.setRecycleItems()
+            }
+
+            viewModel.recycleItems.observe(viewLifecycleOwner){
+                viewModel.setOutItems()
+            }
+
             viewModel.setAllItems()
 
             listScreen(viewModel = viewModel) {
@@ -166,7 +174,7 @@ class TodoListFragment : Fragment(), ConfirmationDialogFragment.DialogSelectedLi
 @Composable
 fun listScreen(viewModel: ListViewModel = viewModel(), toEdit: () -> Unit) {
 
-    val listItems by viewModel.recycleItems.observeAsState()
+    val listItems by viewModel.outRecycleItems.observeAsState()
 
     Log.d("checklist", "$listItems")
 
@@ -174,11 +182,9 @@ fun listScreen(viewModel: ListViewModel = viewModel(), toEdit: () -> Unit) {
         Log.d("MainScreen", "composition!")
     }
 
-
-
     todoList(
         listItems = listItems,
-        changeFinishFlgAction = viewModel::updateItem,
+        changeFinishFlgAction = viewModel::changeItemFinishFlg,
         changeOpenFlgAction = viewModel::changeOpenFlag
     )
     toEditFab {
@@ -222,7 +228,7 @@ fun todoListItem(
         Column(modifier = Modifier.clickable(enabled = true,
             interactionSource = remember { MutableInteractionSource() },
             indication = rememberRipple(bounded = false)) {
-            changeOpenFlgAction
+            changeOpenFlgAction()
         }) {
             closeItemSet(item = item, checkClickAction = checkClickAction, arrowClickAction = changeOpenFlgAction)
         }
@@ -232,18 +238,19 @@ fun todoListItem(
 @Composable
 fun closeItemSet(item: RecycleItem, checkClickAction: () -> Unit, arrowClickAction: () -> Unit){
     Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-        checkButton(item = item, action = checkClickAction)
+        checkButton(isFinish = item.isFinish, action = checkClickAction)
         listItemTitleSet(title = item.title, deadLine = item.deadLine.toString())
-        arrowButton(item = item, action = arrowClickAction)
+        arrowButton(isOpen = item.isOpen, action = arrowClickAction)
     }
 }
 
+
 @Composable
-fun arrowButton(item: RecycleItem, action: () -> Unit){
+fun arrowButton(isOpen: Boolean, action: () -> Unit){
     Box(modifier = Modifier
         .fillMaxHeight()
         .fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
-        val iconImg = if (!item.isOpen) Icons.Filled.ArrowDropDown else Icons.Filled.ArrowDropUp
+        val iconImg = if (isOpen)Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown
         Icon(iconImg, contentDescription = "Open", modifier = Modifier.clickable(
             enabled = true,
             interactionSource = remember { MutableInteractionSource() },
@@ -255,7 +262,7 @@ fun arrowButton(item: RecycleItem, action: () -> Unit){
 }
 
 @Composable
-fun checkButton(item: RecycleItem,action: () -> Unit){
+fun checkButton(isFinish: Boolean, action: () -> Unit){
     Icon(
         Icons.Filled.Check,
         contentDescription = "check",
@@ -269,7 +276,7 @@ fun checkButton(item: RecycleItem,action: () -> Unit){
             ) {
                 action()
             },
-        if (!item.isFinish) Color.Gray else Color.Green
+        if (isFinish)  Color.Green else Color.Gray
     )
 }
 
