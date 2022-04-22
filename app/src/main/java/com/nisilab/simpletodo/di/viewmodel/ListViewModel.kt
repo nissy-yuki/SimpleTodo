@@ -97,8 +97,6 @@ class ListViewModel @ViewModelInject constructor(
 
     fun updateRecycleItem(item: RecycleItem, flg: Boolean){
         val list = _recycleItems.value!!.toMutableList()
-        Log.d("checkValue", "${list}")
-        Log.d("checkValue", "${item}")
         list[list.lastIndexOf(item)].isFinish = flg
         _recycleItems.value = list.toList()
     }
