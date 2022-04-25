@@ -76,10 +76,12 @@ class TodoListFragment : Fragment(), ConfirmationDialogFragment.DialogSelectedLi
         binding.listScreen.setContent {
 
             viewModel.todoItems.observe(viewLifecycleOwner){
+                Log.d("checkValue1","$it")
                 viewModel.setRecycleItems()
             }
 
             viewModel.recycleItems.observe(viewLifecycleOwner){
+                Log.d("checkValue2","$it")
                 viewModel.setOutItems()
             }
 
@@ -174,7 +176,7 @@ class TodoListFragment : Fragment(), ConfirmationDialogFragment.DialogSelectedLi
 @Composable
 fun listScreen(viewModel: ListViewModel = viewModel(), toEdit: () -> Unit) {
 
-    val listItems by viewModel.outRecycleItems.observeAsState()
+    val listItems: List<RecycleItem>? by viewModel.outRecycleItems.observeAsState()
 
     Log.d("checklist", "$listItems")
 

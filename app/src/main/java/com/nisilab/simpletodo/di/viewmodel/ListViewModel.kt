@@ -26,7 +26,6 @@ class ListViewModel @ViewModelInject constructor(
     // 出力用リサイクルアイテム
     val outRecycleItems: LiveData<List<RecycleItem>> = _outRecycleItems
 
-
     fun setAllItems(){
         viewModelScope.launch {
             _todoItems.value = repository.getItems()
@@ -80,6 +79,7 @@ class ListViewModel @ViewModelInject constructor(
         val list = _recycleItems.value!!
         list.find { it.id == item.id }!!.isOpen = !item.isOpen
         _recycleItems.value = list
+//        Log.d("checkValue","${_recycleItems.value}")
     }
 
     private fun searchTodoItem(id: Int): TodoItem{
