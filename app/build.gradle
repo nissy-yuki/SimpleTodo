@@ -5,7 +5,10 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'de.mannodermaus.android-junit5'
 }
+
+
 
 kapt {
     correctErrorTypes = true
@@ -40,6 +43,28 @@ android {
     dataBinding {
         enabled = true
     }
+
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek2', 'junit-vintage'
+                }
+            }
+            jacocoOptions {
+                html.enabled = true
+                xml.enabled = false
+                csv.enabled = false
+            }
+        }
+    }
     
 }
 
@@ -70,9 +95,9 @@ dependencies {
     def hilt_version = "2.28-alpha"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
     // When using Kotlin.
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     // for Room
     def room_version = "2.4.2"
@@ -80,13 +105,27 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    def coroutines_version = "1.6.4"
     // for coroutine
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    // coroutines-core
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     // for epoxy
     def epoxy_version = "4.0.0"
     implementation "com.airbnb.android:epoxy:$epoxy_version"
     implementation "com.airbnb.android:epoxy-databinding:${epoxy_version}"
     kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
+
+    // for test
+    // assertion
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+
+    // spek2
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
+    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+
 
 }
